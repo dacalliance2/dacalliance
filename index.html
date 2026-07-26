@@ -2899,6 +2899,116 @@ body.is-loaded [data-reveal] {
   .ocacs-tagline p { font-size: clamp(1.3rem, 6vw, 1.7rem); }
   .ocacs-frame { border-radius: 14px; }
 }
+
+/* ══════════════ SÍNTESIS: DAC ALLIANCE ══════════════ */
+.synthesis {
+  position: relative;
+  background: var(--paper);
+  padding: 6rem 2.5rem;
+  overflow: visible;
+  text-align: center;
+}
+
+.synthesis::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(15,111,102,.07), transparent 60%),
+    radial-gradient(ellipse at 65% 40%, rgba(184,134,46,.08), transparent 60%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.synthesis-inner {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.synthesis-header { margin-bottom: 2.8rem; }
+
+.synthesis-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin: 1rem 0 1.2rem;
+  text-wrap: balance;
+}
+
+.synthesis-lede {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.synthesis-statement {
+  max-width: 760px;
+  margin: 0 auto 2rem;
+}
+.synthesis-statement p {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  line-height: 1.3;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.synthesis-tagline {
+  font-family: var(--fb);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: var(--teal-dk);
+  margin: 0 0 3.5rem;
+}
+
+.synthesis-visual {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.synthesis-frame {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -30px rgba(10,20,32,.35);
+}
+.synthesis-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 1440px) {
+  .synthesis-visual { max-width: 1000px; }
+}
+
+@media (max-width: 1024px) {
+  .synthesis { padding: 4.25rem 2rem; }
+}
+
+@media (max-width: 680px) {
+  .synthesis { padding: 3.75rem 1.25rem; }
+  .synthesis-header { margin-bottom: 2.25rem; }
+  .synthesis-tagline { margin-bottom: 2.5rem; }
+  .synthesis-frame { border-radius: 14px; }
+}
 </style>
 </head>
 <body>
@@ -3710,6 +3820,40 @@ body.is-loaded [data-reveal] {
           height="643"
         />
         <div class="ocacs-glow" aria-hidden="true"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- SÍNTESIS: DAC ALLIANCE (sección 8) -->
+<section class="synthesis" id="sintesis" aria-label="DAC Alliance">
+  <div class="synthesis-inner">
+
+    <div class="synthesis-header">
+      <p class="eyebrow reveal-up">
+        <span class="eyebrow-mark" aria-hidden="true"></span>
+        <span>DAC Alliance</span>
+      </p>
+      <h2 class="synthesis-title reveal-up">From cold wallets to Wealth Structures</h2>
+      <p class="synthesis-lede reveal-up">Unimos experiencia legal, fiscal y fiduciaria con tecnología y compliance blockchain para transformar activos digitales dispersos en patrimonio institucional.</p>
+    </div>
+
+    <div class="synthesis-statement reveal-up">
+      <p>El desafío ya no es adquirir activos digitales.</p>
+      <p>El desafío es transformarlos en patrimonio.</p>
+    </div>
+
+    <p class="synthesis-tagline reveal-up">Del caos digital a estructuras que protegen, optimizan y perduran.</p>
+
+    <div class="synthesis-visual reveal-up">
+      <div class="synthesis-frame">
+        <img
+          src="8.jpg"
+          alt="Bóveda institucional flanqueada por dos columnas — Insight Trust y Molina Law Boutique — rodeada de paneles de análisis de activos, trazabilidad blockchain y compliance, con el checklist: identificado, documentado, estructurado, trazable, protegido, transferible, preparado para procesos sucesorios y para interactuar con terceros institucionales"
+          loading="lazy"
+          width="955"
+          height="650"
+        />
       </div>
     </div>
 
