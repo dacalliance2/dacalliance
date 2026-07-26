@@ -48,6 +48,8 @@ body {
   overflow-x: hidden;
 }
 
+body.no-scroll { overflow: hidden; }
+
 a { color: inherit; }
 :focus-visible {
   outline: 2px solid var(--steel);
@@ -109,9 +111,41 @@ body.is-loaded [data-reveal] {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1.7rem;
   list-style: none;
 }
+.nav-links-cta-item,
+.nav-cta-mobile { display: none; }
+
+/* ── Hamburger (oculto en desktop) ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 60;
+}
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform .35s var(--ease), opacity .35s var(--ease);
+}
+.nav.is-open .nav-toggle-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav.is-open .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.nav.is-open .nav-toggle-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
 .nav-links a {
   position: relative;
   font-family: var(--fb);
@@ -158,6 +192,65 @@ body.is-loaded [data-reveal] {
   box-shadow: 0 12px 26px -10px rgba(184,134,46,.55);
 }
 .nav-cta:hover svg { transform: translateX(3px); }
+
+/* Con 7 enlaces, el nav horizontal queda apretado antes de llegar a mobile:
+   pasamos a menú hamburguesa ya en tablets/laptops chicos, no solo en teléfonos. */
+@media (max-width: 1080px) {
+  .nav-toggle { display: flex; }
+  .nav .nav-cta { display: none; }
+  .nav-logo { position: relative; z-index: 60; }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--paper);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .35s var(--ease), visibility .35s var(--ease);
+    z-index: 55;
+  }
+  .nav.is-open .nav-links {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .nav-links a {
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--ink);
+    padding-bottom: 0;
+  }
+  .nav-links a::after { display: none; }
+  .nav-links-cta-item { display: block; margin-top: 1rem; }
+  .nav-links a.nav-cta-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--fb);
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--ink);
+    padding: .85rem 1.7rem;
+    border-radius: 100px;
+    text-decoration: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .nav, .nav.is-scrolled { padding: 1rem 1.25rem; }
+}
 
 /* ══════════════ HERO ══════════════ */
 .hero-center-layout {
@@ -781,7 +874,7 @@ body.is-loaded [data-reveal] {
 
 @media (max-width: 680px) {
   .nav, .nav.is-scrolled { padding: 1rem 1.25rem; }
-  .nav-links { display: none; }
+
   .origin { padding: 3.75rem 1.25rem; }
   .origin-head { margin-bottom: 1.75rem; }
   .origin-stages {
@@ -2299,7 +2392,7 @@ body.is-loaded [data-reveal] {
 .estructuracion {
   position: relative;
   background: var(--paper);
-  padding: 2rem 0rem;
+  padding: 6rem 2.5rem;
   overflow: visible;
 }
 
@@ -2326,72 +2419,56 @@ body.is-loaded [data-reveal] {
   z-index: 1;
 }
 
+/* ── Header: título+lede a la izquierda, intro+bullets a la derecha (misma fila, sin masthead partido) ── */
 .estructuracion-header {
   display: grid;
-  grid-template-columns: minmax(300px, auto) 1fr;
-  column-gap: 3.5rem;
-  align-items: end;
-  max-width: 1040px;
-  margin: 0 auto 2.5rem;
-  text-align: left;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 4rem;
+  align-items: start;
+  max-width: 1080px;
+  margin: 0 auto 4rem;
 }
-.estructuracion-header .eyebrow { grid-column: 1; grid-row: 1; }
+
+.estructuracion-header-left,
+.estructuracion-header-right { text-align: left; }
 
 .estructuracion-title {
-  grid-column: 1;
-  grid-row: 2;
   font-family: var(--fb);
   font-weight: 300;
-  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-size: clamp(2.1rem, 3.6vw, 3rem);
   line-height: 1.15;
   letter-spacing: -.03em;
   color: var(--ink);
-  margin: .6rem 0 0;
+  margin: 1rem 0 1.1rem;
   text-wrap: balance;
 }
 
 .estructuracion-lede {
-  grid-column: 2;
-  grid-row: 1 / 3;
   font-family: var(--fb);
-  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--ink-60);
-  align-self: end;
-  padding-bottom: .3rem;
+  max-width: 420px;
 }
 
-@media (max-width: 900px) {
-  .estructuracion-header {
-    display: block;
-    text-align: center;
-    max-width: 640px;
-  }
-}
-
-.estructuracion-intro {
-  max-width: 800px;
-  margin: 0 auto 0rem;
-}
+.estructuracion-header-right { padding-top: 2.9rem; }
 
 .estructuracion-intro-text {
-  text-align: center;
   font-family: var(--fb);
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-size: clamp(1rem, 1.1vw, 1.05rem);
   font-weight: 400;
   line-height: 1.7;
   color: var(--ink-60);
-  margin-bottom: 2rem;
+  margin: 0 0 1.6rem;
 }
 
 .estructuracion-bullets {
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 2.5rem;
-  max-width: 640px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  margin: 0;
   padding: 0;
 }
 
@@ -2415,13 +2492,32 @@ body.is-loaded [data-reveal] {
   flex-shrink: 0;
 }
 
-.estructuracion-desktop { display: block; }
+@media (max-width: 900px) {
+  .estructuracion-header {
+    display: block;
+    max-width: 560px;
+    margin-bottom: 3rem;
+  }
+  .estructuracion-header-left,
+  .estructuracion-header-right { text-align: center; }
+  .estructuracion-lede { max-width: none; margin: 0 auto; }
+  .estructuracion-header-right { padding-top: 2rem; }
+  .estructuracion-bullets { align-items: center; }
+  .estructuracion-bullets li { text-align: left; }
+}
+
+/* ── Imagen: cinco pilares con texto y números integrados en la propia foto,
+   misma imagen en todos los tamaños — frame con tarjeta porque no tiene canal alpha ── */
+.estructuracion-visual {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+}
 
 .estructuracion-frame {
   position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -30px rgba(10,20,32,.35);
 }
 
 .estructuracion-frame img {
@@ -2437,169 +2533,20 @@ body.is-loaded [data-reveal] {
   top: 45%;
   left: 50%;
   width: 55%;
-  height: 50%;
+  height: 55%;
   transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at center, rgba(184,134,46,.10), transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(184,134,46,.14), transparent 65%);
   filter: blur(50px);
   pointer-events: none;
   z-index: 0;
 }
 
-/* ═══ PILARES: textos en la mitad, números subidos, caja estrecha, desplazados a la izquierda ═══ */
-.pillar-wrap {
-  position: absolute;
-  z-index: 2;
-  top: 32%;
-  left: var(--pw-left);
-  width: 13%;
-  height: 34%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+@media (min-width: 1440px) {
+  .estructuracion-visual { max-width: 1220px; }
 }
 
-/* Corridos levemente a la izquierda para no tocar el borde derecho del pilar */
-.pillar-wrap--1 { --pw-left: 14.1%; }
-.pillar-wrap--2 { --pw-left: 32.1%; }
-.pillar-wrap--3 { --pw-left: 50.1%; }
-.pillar-wrap--4 { --pw-left: 68.1%; }
-.pillar-wrap--5 { --pw-left: 86.1%; }
-
-.pillar-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 0 0.1rem;
-}
-
-.pillar-text h4 {
-  font-family: var(--fb);
-  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.25;
-  margin: 0 0 0.3rem;
-  max-width: 100%;
-}
-
-.pillar-line {
-  width: 20px;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.5;
-  margin: 0.15rem 0 0.4rem;
-  flex-shrink: 0;
-  border-radius: 1px;
-}
-
-.pillar-text p {
-  font-family: var(--fb);
-  font-size: clamp(0.6rem, 0.78vw, 0.7rem);
-  font-weight: 400;
-  color: var(--ink-60);
-  line-height: 1.4;
-  margin: 0;
-  max-width: 100%;
-}
-
-.pillar-num {
-  margin-top: 70%;
-  padding-top: 0.3rem;
-  padding-bottom: 0;
-  font-family: var(--fb);
-  font-size: clamp(1.35rem, 1.9vw, 1.7rem);
-  font-weight: 300;
-  color: var(--ink-28);
-  line-height: 1;
-  opacity: 0.35;
-}
-
-.pillar-wrap--3 .pillar-text h4 { color: var(--teal); }
-.pillar-wrap--3 .pillar-line {
-  background: linear-gradient(90deg, transparent, var(--teal-soft), transparent);
-  opacity: 0.65;
-}
-.pillar-wrap--3 .pillar-num {
-  color: var(--teal);
-  opacity: 0.45;
-}
-
-/* ── Mobile cards ── */
-.estructuracion-mobile { display: none; }
-
-.pillar-cards-mobile {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  max-width: 480px;
-  margin: 0 auto 3rem;
-}
-
-.pillar-card-mobile {
-  position: relative;
-  background: var(--paper);
-  border-radius: 12px;
-  padding: 1.4rem 1.6rem 1.2rem;
-  border: 1px solid var(--line);
-  text-align: center;
-  overflow: hidden;
-  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
-}
-
-.pillar-card-mobile:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 28px -14px rgba(10,20,32,.15);
-  border-color: rgba(10,20,32,.12);
-}
-
-.pillar-card-mobile--center {
-  border-color: rgba(15,111,102,.25);
-  background: linear-gradient(180deg, rgba(15,111,102,.04), var(--paper));
-}
-
-.pillar-card-mobile h4 {
-  font-family: var(--fb);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.3;
-  margin: 0 0 0.35rem;
-}
-
-.pillar-card-mobile--center h4 {
-  color: var(--teal);
-}
-
-.pillar-card-mobile p {
-  font-family: var(--fb);
-  font-size: .88rem;
-  color: var(--ink-60);
-  line-height: 1.55;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.pillar-card-mobile__num {
-  position: absolute;
-  bottom: 0.6rem;
-  right: 1rem;
-  font-family: var(--fb);
-  font-size: 2.8rem;
-  font-weight: 300;
-  color: var(--ink-28);
-  opacity: 0.18;
-  line-height: 1;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.pillar-card-mobile--center .pillar-card-mobile__num {
-  color: var(--teal);
-  opacity: 0.25;
+@media (max-width: 680px) {
+  .estructuracion-frame { border-radius: 14px; }
 }
 
 /* ── Body textual ── */
@@ -2697,43 +2644,16 @@ body.is-loaded [data-reveal] {
 
 @media (max-width: 1024px) {
   .estructuracion { padding: 4.25rem 2rem; }
-  .estructuracion-bullets { gap: 1rem 1.5rem; }
-  .pillar-wrap {
-    top: 42%;
-    width: 13.5%;
-    height: 32%;
-  }
-  .pillar-text h4 {
-    font-size: 0.6rem;
-    margin-bottom: 0.2rem;
-  }
-  .pillar-line {
-    width: 16px;
-    margin: 0.1rem 0 0.3rem;
-  }
-  .pillar-text p {
-    font-size: 0.54rem;
-    line-height: 1.35;
-  }
-  .pillar-num {
-    font-size: 1.15rem;
-    padding-top: 0.2rem;
-  }
 }
 
 @media (max-width: 900px) {
-  .estructuracion-desktop { display: none; }
-  .estructuracion-mobile { display: block; }
   .estructuracion-benefits { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
   .estructuracion-benefit-item span { max-width: 130px; }
 }
 
 @media (max-width: 680px) {
   .estructuracion { padding: 3.75rem 1.25rem; }
-  .estructuracion-header { margin-bottom: 1.75rem; }
   .estructuracion-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-  .estructuracion-bullets { grid-template-columns: 1fr; gap: .8rem; max-width: 320px; }
-  .estructuracion-intro { margin-bottom: 2.5rem; }
   .estructuracion-body { margin-bottom: 2.5rem; }
   .estructuracion-benefits { grid-template-columns: 1fr; gap: .85rem; }
   .estructuracion-benefit-item {
@@ -2750,6 +2670,235 @@ body.is-loaded [data-reveal] {
   .estructuracion-benefit-icon { width: 40px; height: 40px; }
   .estructuracion-benefit-icon svg { width: 16px; height: 16px; }
 }
+
+/* ══════════════ OCACS ══════════════ */
+.ocacs {
+  position: relative;
+  background: var(--fog);
+  padding: 5.5rem 2.5rem;
+  overflow: visible;
+}
+
+/* Glow de transición desde estructuración */
+.ocacs::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(184,134,46,.08), transparent 60%),
+    radial-gradient(ellipse at 65% 40%, rgba(15,111,102,.08), transparent 60%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ocacs-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* ── Header (mismo patrón centrado que .diag-header) ── */
+.ocacs-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 2rem;
+}
+
+.ocacs-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  color: var(--ink);
+  margin: 1rem 0 .3rem;
+}
+
+.ocacs-subtitle {
+  font-family: var(--fm);
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1.2rem;
+}
+
+.ocacs-lede {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--ink-60);
+}
+
+/* ── Intro ── */
+.ocacs-intro {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+}
+.ocacs-intro-text {
+  text-align: center;
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  margin: 0;
+}
+
+/* ── Caja pregunta (mismo tratamiento que .ocaps-question) ── */
+.ocacs-question {
+  position: relative;
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem 1.4rem 3.6rem;
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  box-shadow: 0 16px 40px -18px rgba(10,20,32,.35);
+}
+
+.ocacs-q-mark {
+  position: absolute;
+  top: 1.35rem;
+  left: 1.2rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-soft);
+  color: var(--gold-soft);
+  font-family: var(--fb);
+  font-size: .95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ocacs-question p {
+  font-family: var(--fb);
+  font-size: .98rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255,255,255,.88);
+  margin: 0;
+}
+
+/* ── Checklist (mismo tratamiento que .ocaps-checklist) ── */
+.ocacs-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  max-width: 560px;
+  margin: 0 auto 3rem;
+  padding: 0;
+  text-align: left;
+}
+
+.ocacs-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.45;
+}
+
+.ocacs-checklist li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: .12rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--teal-soft);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%230F6F66' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/68% no-repeat;
+}
+
+/* ── Tagline ── */
+.ocacs-tagline {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 3rem;
+}
+.ocacs-tagline p {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin: 0 0 .5rem;
+  text-wrap: balance;
+}
+.ocacs-tagline p:last-child { margin-bottom: 0; }
+.ocacs-tagline strong {
+  font-weight: 600;
+  color: var(--teal-dk);
+}
+
+/* ── Imagen contenida: la foto es RGB sin canal alpha, así que va en frame con
+     borde redondeado y sombra (no full-bleed) ── */
+.ocacs-visual {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.ocacs-frame {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -30px rgba(10,20,32,.4);
+}
+.ocacs-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.ocacs-glow {
+  position: absolute;
+  top: 45%;
+  left: 30%;
+  width: 55%;
+  height: 55%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(15,111,102,.16), transparent 65%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (min-width: 1440px) {
+  .ocacs-visual { max-width: 1160px; }
+}
+
+@media (max-width: 1024px) {
+  .ocacs { padding: 4.25rem 2rem; }
+  .ocacs-title { font-size: clamp(2.2rem, 6vw, 3rem); }
+}
+
+@media (max-width: 680px) {
+  .ocacs { padding: 3.75rem 1.25rem; }
+  .ocacs-header { margin-bottom: 1.75rem; }
+  .ocacs-title { font-size: clamp(2rem, 8vw, 2.6rem); }
+  .ocacs-intro { margin-bottom: 2rem; }
+  .ocacs-question { padding: 1.2rem 1.2rem 1.2rem 3.2rem; }
+  .ocacs-q-mark { top: 1.15rem; left: 1rem; width: 24px; height: 24px; font-size: .85rem; }
+  .ocacs-checklist { margin-bottom: 2.25rem; }
+  .ocacs-checklist li { font-size: .88rem; }
+  .ocacs-tagline p { font-size: clamp(1.3rem, 6vw, 1.7rem); }
+  .ocacs-frame { border-radius: 14px; }
+}
 </style>
 </head>
 <body>
@@ -2762,10 +2911,22 @@ body.is-loaded [data-reveal] {
   <div class="nav-logo">
     <img src="LOGO_DAC.svg" alt="DAC Alliance" width="493" height="120.9">
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#origen">Por qué</a></li>
     <li><a href="#metodologia">Metodología</a></li>
+    <li><a href="#diagnostico">Diagnóstico</a></li>
+    <li><a href="#ocaps">OCAPS</a></li>
+    <li><a href="#estructuracion">Estructuración</a></li>
+    <li><a href="#ocacs">OCACS</a></li>
     <li><a href="#contacto">Contacto</a></li>
+    <li class="nav-links-cta-item">
+      <a class="nav-cta-mobile" href="#contacto">
+        Solicitar reunión
+        <svg width="11" height="11" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </li>
   </ul>
   <a class="nav-cta" href="#contacto" data-magnetic data-magnetic-strength="0.25">
     Solicitar reunión
@@ -2773,6 +2934,11 @@ body.is-loaded [data-reveal] {
       <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </a>
+  <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+    <span class="nav-toggle-bar" aria-hidden="true"></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -3415,130 +3581,42 @@ body.is-loaded [data-reveal] {
 <section class="estructuracion" id="estructuracion" aria-label="Estructuración Patrimonial">
   <div class="estructuracion-inner">
 
-    <!-- Header -->
+    <!-- Header: título+lede a la izquierda, intro+bullets a la derecha -->
     <div class="estructuracion-header">
-      <p class="eyebrow reveal-up">
-        <span class="eyebrow-mark" aria-hidden="true"></span>
-        <span>Paso 3 de la metodología</span>
-      </p>
-      <h2 class="estructuracion-title reveal-up">3. Estructuración Patrimonial</h2>
-      <p class="estructuracion-lede reveal-up">
-        Convertimos el patrimonio digital acreditado en patrimonio jurídicamente estructurado.
-      </p>
+      <div class="estructuracion-header-left">
+        <p class="eyebrow reveal-up">
+          <span class="eyebrow-mark" aria-hidden="true"></span>
+          <span>Paso 3 de la metodología</span>
+        </p>
+        <h2 class="estructuracion-title reveal-up">3. Estructuración Patrimonial</h2>
+        <p class="estructuracion-lede reveal-up">
+          Convertimos el patrimonio digital acreditado en patrimonio jurídicamente estructurado.
+        </p>
+      </div>
+      <div class="estructuracion-header-right reveal-up">
+        <p class="estructuracion-intro-text">
+          Diseñamos la arquitectura jurídica, fiscal y fiduciaria más adecuada para proteger, administrar y transmitir el patrimonio digital en cualquier jurisdicción.
+        </p>
+        <ul class="estructuracion-bullets">
+          <li><span class="estructuracion-dot" aria-hidden="true"></span>Protección jurídica y patrimonial</li>
+          <li><span class="estructuracion-dot" aria-hidden="true"></span>Planificación sucesoria y continuidad</li>
+          <li><span class="estructuracion-dot" aria-hidden="true"></span>Optimización fiscal internacional</li>
+          <li><span class="estructuracion-dot" aria-hidden="true"></span>Cumplimiento normativo y gobernanza</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Intro + bullets principales -->
-    <div class="estructuracion-intro reveal-up">
-      <p class="estructuracion-intro-text">
-        Diseñamos la arquitectura jurídica, fiscal y fiduciaria más adecuada para proteger, administrar y transmitir el patrimonio digital en cualquier jurisdicción.
-      </p>
-      <ul class="estructuracion-bullets">
-        <li><span class="estructuracion-dot" aria-hidden="true"></span>Protección jurídica y patrimonial</li>
-        <li><span class="estructuracion-dot" aria-hidden="true"></span>Planificación sucesoria y continuidad</li>
-        <li><span class="estructuracion-dot" aria-hidden="true"></span>Optimización fiscal internacional</li>
-        <li><span class="estructuracion-dot" aria-hidden="true"></span>Cumplimiento normativo y gobernanza</li>
-      </ul>
-    </div>
-
-    <!-- DESKTOP: Imagen con textos superpuestos -->
-    <div class="estructuracion-desktop reveal-up">
+    <!-- Imagen: cinco pilares con textos y números ya integrados, misma foto en desktop y mobile -->
+    <div class="estructuracion-visual reveal-up">
       <div class="estructuracion-frame">
         <img
-          src="frame_6.png"
-          alt="Cinco pilares institucionales representando las estructuras jurídicas de DAC Alliance"
+          src="mobile6.png"
+          alt="Cinco pilares institucionales representando las estructuras jurídicas de DAC Alliance: LLCs, Sociedades internacionales, Estructuración Patrimonial, Fundaciones privadas y Holdings patrimoniales"
           loading="lazy"
-          width="1440"
-          height="720"
+          width="931"
+          height="454"
         />
         <div class="estructuracion-glow" aria-hidden="true"></div>
-
-                <!-- Pilar 01 -->
-        <div class="pillar-wrap pillar-wrap--1">
-          <div class="pillar-text">
-            <h4>&nbsp;<br>LLCs</h4>
-            <div class="pillar-line" aria-hidden="true"></div>
-            <p>Vehículos flexibles para operar, proteger y gestionar activos digitales.</p>
-          </div>
-          <span class="pillar-num" aria-hidden="true">01</span>
-        </div>
-
-        <!-- Pilar 02 -->
-        <div class="pillar-wrap pillar-wrap--2">
-          <div class="pillar-text">
-            <h4>Sociedades<br>internacionales</h4>
-            <div class="pillar-line" aria-hidden="true"></div>
-            <p>Estructuras corporativas adaptadas a cada jurisdicción y objetivo fiscal.</p>
-          </div>
-          <span class="pillar-num" aria-hidden="true">02</span>
-        </div>
-
-        <!-- Pilar 03 (destacado) -->
-        <div class="pillar-wrap pillar-wrap--3">
-          <div class="pillar-text">
-            <h4>Estructuración<br>Patrimonial</h4>
-            <div class="pillar-line" aria-hidden="true"></div>
-            <p>Arquitectura jurídica y fiscal a medida para proteger y optimizar tu patrimonio digital.</p>
-          </div>
-          <span class="pillar-num" aria-hidden="true">03</span>
-        </div>
-
-        <!-- Pilar 04 -->
-        <div class="pillar-wrap pillar-wrap--4">
-          <div class="pillar-text">
-            <h4>Fundaciones<br>privadas</h4>
-            <div class="pillar-line" aria-hidden="true"></div>
-            <p>Instrumentos idóneos para control, propósito y planificación intergeneracional.</p>
-          </div>
-          <span class="pillar-num" aria-hidden="true">04</span>
-        </div>
-
-        <!-- Pilar 05 -->
-        <div class="pillar-wrap pillar-wrap--5">
-          <div class="pillar-text">
-            <h4>Holdings<br>patrimoniales</h4>
-            <div class="pillar-line" aria-hidden="true"></div>
-            <p>Estructuras de control y gestión de activos y participaciones a largo plazo.</p>
-          </div>
-          <span class="pillar-num" aria-hidden="true">05</span>
-        </div>
-
-    <!-- MOBILE: Cards apiladas -->
-    <div class="estructuracion-mobile">
-      <div class="pillar-cards-mobile">
-        <article class="pillar-card-mobile reveal-up">
-          <span class="pillar-card-mobile__num" aria-hidden="true">01</span>
-          <h4>LLCs</h4>
-          <div class="pillar-divider" aria-hidden="true"></div>
-          <p>Vehículos flexibles para operar, proteger y gestionar activos digitales.</p>
-        </article>
-
-        <article class="pillar-card-mobile reveal-up">
-          <span class="pillar-card-mobile__num" aria-hidden="true">02</span>
-          <h4>Sociedades internacionales</h4>
-          <div class="pillar-divider" aria-hidden="true"></div>
-          <p>Estructuras corporativas adaptadas a cada jurisdicción y objetivo fiscal.</p>
-        </article>
-
-        <article class="pillar-card-mobile pillar-card-mobile--center reveal-up">
-          <span class="pillar-card-mobile__num" aria-hidden="true">03</span>
-          <h4>Estructuración Patrimonial</h4>
-          <div class="pillar-divider" aria-hidden="true"></div>
-          <p>Arquitectura jurídica y fiscal a medida para proteger y optimizar tu patrimonio digital.</p>
-        </article>
-
-        <article class="pillar-card-mobile reveal-up">
-          <span class="pillar-card-mobile__num" aria-hidden="true">04</span>
-          <h4>Fundaciones privadas</h4>
-          <div class="pillar-divider" aria-hidden="true"></div>
-          <p>Instrumentos idóneos para control, propósito y planificación intergeneracional.</p>
-        </article>
-
-        <article class="pillar-card-mobile reveal-up">
-          <span class="pillar-card-mobile__num" aria-hidden="true">05</span>
-          <h4>Holdings patrimoniales</h4>
-          <div class="pillar-divider" aria-hidden="true"></div>
-          <p>Estructuras de control y gestión de activos y participaciones a largo plazo.</p>
-        </article>
       </div>
     </div>
 
@@ -3580,6 +3658,58 @@ body.is-loaded [data-reveal] {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
         <span>Cumplimiento normativo y transparencia</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- OCACS (sección 7) -->
+<section class="ocacs" id="ocacs" aria-label="OCACS — On-Chain Asset Compliance Statement">
+  <div class="ocacs-inner">
+
+    <div class="ocacs-header">
+      <p class="eyebrow reveal-up">
+        <span class="eyebrow-mark" aria-hidden="true"></span>
+        <span>Paso 4 de la metodología</span>
+      </p>
+      <h2 class="ocacs-title reveal-up">4. OCACS</h2>
+      <p class="ocacs-subtitle reveal-up">On-Chain Asset Compliance Statement</p>
+      <p class="ocacs-lede reveal-up">Cuando el patrimonio debe explicarse frente a terceros.</p>
+    </div>
+
+    <div class="ocacs-intro reveal-up">
+      <p class="ocacs-intro-text">OCACS convierte la información on-chain en un informe de compliance comprensible, verificable y aceptable por bancos, custodios, reguladores e instituciones.</p>
+    </div>
+
+    <div class="ocacs-question reveal-up">
+      <span class="ocacs-q-mark" aria-hidden="true">?</span>
+      <p>¿Puede acreditarse adecuadamente el origen, evolución y consistencia patrimonial de los activos digitales frente a terceros?</p>
+    </div>
+
+    <ul class="ocacs-checklist reveal-up">
+      <li>Verificación AML, PEP y sanciones</li>
+      <li>Análisis KYT y trazabilidad avanzada</li>
+      <li>CoinTracking y reconstrucción histórica</li>
+      <li>Evaluación SoF (Source of Funds) y SoW (Source of Wealth)</li>
+      <li>Preparación documental para terceros institucionales</li>
+      <li>Informe listo para auditorías y revisiones regulatorias</li>
+    </ul>
+
+    <div class="ocacs-tagline reveal-up">
+      <p>Traducimos la complejidad blockchain en <strong>confianza institucional</strong>.</p>
+      <p>Un informe que <strong>abre puertas</strong> y genera <strong>aceptación</strong>.</p>
+    </div>
+
+    <div class="ocacs-visual reveal-up">
+      <div class="ocacs-frame">
+        <img
+          src="frame7.png"
+          alt="Un representante entrega el informe DAC OCACS Report a cuatro representantes institucionales — banca privada, custodio institucional, family office y regulador de compliance — en un entorno de análisis de blockchain"
+          loading="lazy"
+          width="1181"
+          height="643"
+        />
+        <div class="ocacs-glow" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -3635,6 +3765,40 @@ body.is-loaded [data-reveal] {
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  }
+
+  function initMobileMenu() {
+    var nav = document.getElementById('nav');
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (!nav || !toggle || !links) return;
+
+    function closeMenu() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menú');
+      document.body.classList.remove('no-scroll');
+    }
+    function openMenu() {
+      nav.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Cerrar menú');
+      document.body.classList.add('no-scroll');
+    }
+
+    toggle.addEventListener('click', function () {
+      if (nav.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1080) closeMenu();
+    });
   }
 
   function initLoadReveal() {
@@ -3971,6 +4135,7 @@ body.is-loaded [data-reveal] {
   }
 
   safe(initNav, 'initNav');
+  safe(initMobileMenu, 'initMobileMenu');
   safe(initLoadReveal, 'initLoadReveal');
   safe(initScrollReveal, 'initScrollReveal');
   safe(initScrollProgress, 'initScrollProgress');
