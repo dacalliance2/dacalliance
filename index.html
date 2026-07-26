@@ -1,0 +1,3969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAC Alliance — Patrimonio Digital Institucional</title>
+<meta name="description" content="Metodología para transformar activos digitales dispersos en patrimonio digital: bancable, heredable y custodiado institucionalmente.">
+<link rel="icon" type="image/svg+xml" href="LOGO_DAC.svg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root {
+  --ink:      #0A1420;
+  --ink-85:   rgba(10,20,32,.85);
+  --ink-60:   rgba(10,20,32,.60);
+  --ink-42:   rgba(10,20,32,.42);
+  --ink-28:   rgba(10,20,32,.28);
+  --line:     rgba(10,20,32,.10);
+  --paper:    #FFFFFF;
+  --warm:     #FAFAF9;
+  --stone:    #F2ECE1;
+  --fog:      #EEF1F2;
+
+  --gold:      #B8862E;
+  --gold-dk:   #93691F;
+  --gold-soft: #D9B36B;
+  --steel:      #3F5A76;
+  --steel-dk:   #2C4054;
+  --steel-soft: #7C97AF;
+  --teal:      #0F6F66;
+  --teal-dk:   #0B5750;
+  --teal-soft: #4FA89C;
+
+  --fb: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --fm: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--fb);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+:focus-visible {
+  outline: 2px solid var(--steel);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ── reveal-on-load ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+}
+body.is-loaded [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 2.75rem;
+  transition: background .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease), padding .4s var(--ease);
+}
+.nav.is-scrolled {
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom-color: var(--line);
+  box-shadow: 0 16px 32px -24px rgba(10,20,32,.35);
+  padding: 1.05rem 2.75rem;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+.nav-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+  transition: height .4s var(--ease);
+}
+.nav.is-scrolled .nav-logo img {
+  height: 28px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  position: relative;
+  font-family: var(--fb);
+  font-size: .74rem;
+  font-weight: 500;
+  letter-spacing: .05em;
+  color: var(--ink-60);
+  text-decoration: none;
+  padding-bottom: .3rem;
+  transition: color .25s var(--ease);
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 100%; bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--steel), var(--gold));
+  transition: right .3s var(--ease);
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { right: 0; }
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--fb);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: #fff;
+  background: var(--ink);
+  padding: .72rem 1.4rem;
+  border-radius: 100px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px -13px rgba(10,20,32,.5);
+  transition: background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.nav-cta svg { transition: transform .25s var(--ease); }
+.nav-cta:hover {
+  background: var(--gold-dk);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px -10px rgba(184,134,46,.55);
+}
+.nav-cta:hover svg { transform: translateX(3px); }
+
+/* ══════════════ HERO ══════════════ */
+.hero-center-layout {
+  position: relative;
+  background: var(--paper);
+  padding: 1.5rem 2.5rem 3rem;
+  overflow: hidden;
+}
+
+.hero-center-layout::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 550px;
+  height: 450px;
+  background: radial-gradient(ellipse at center, rgba(63,90,118,.07), transparent 60%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.hero-center-inner {
+  position: relative;
+  width: 100%; /* AÑADIDO: Evita que se encoja por el flex del padre */
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ── Marca (arriba, centrada): logo DAC.png reemplaza eyebrow + título ── */
+.hero-brand-col {
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+}
+
+.hero-brand-img {
+  display: block;
+  width: auto; /* CAMBIO: Respete su tamaño natural */
+  max-width: 280px; /* CAMBIO: Reducido de 420px a 280px para evitar pixelación */
+  height: auto;
+  margin: 0 auto; 
+}
+
+.hero-divider {
+  width: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--steel), var(--gold));
+  margin: 1.8rem auto;
+  opacity: 0.45;
+}
+
+/* ── Imagen (protagonista, ocupa casi todo el ancho de pantalla, sin tarjeta) ── */
+.hero-visual-col {
+  width: 100%;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-visual-frame {
+  position: relative;
+  width: 94%;
+  height: auto;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-visual-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-visual-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 45%;
+  height: 75%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(184,134,46,.22), transparent 65%);
+  filter: blur(40px);
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 3;
+  animation: pyramidGlow 5s ease-in-out infinite alternate;
+}
+@keyframes pyramidGlow {
+  0%   { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 1;   transform: translate(-50%, -50%) scale(1.12); }
+}
+
+/* ── Mensaje: eyebrow + titular + spec-row + acciones (debajo del video, centrado) ── */
+.hero-message-col {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  font-family: var(--fm);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+  margin-bottom: 1.2rem;
+}
+
+.hero-headline {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2.1rem, 3.6vw, 3.15rem);
+  line-height: 1.22;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  text-wrap: balance;
+}
+.hero-headline em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--gold-dk);
+}
+
+/* Fila de atributos: tres cualidades en paralelo, no una secuencia — de ahí la ficha técnica en vez de numeración */
+.hero-facts {
+  display: flex;
+  justify-content: center;
+  max-width: 820px;
+  margin: 0 auto 2.8rem;
+  padding: 1.7rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-fact {
+  flex: 1 1 0;
+  padding: 0 1.6rem;
+}
+.hero-fact + .hero-fact {
+  border-left: 1px solid var(--line);
+}
+
+.hero-fact-label {
+  display: block;
+  font-family: var(--fm);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+  margin-bottom: .6rem;
+}
+
+.hero-fact-desc {
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ink-60);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--fb);
+  font-size: .84rem;
+  font-weight: 500;
+  color: var(--ink-60);
+  text-decoration: none;
+  padding: .5rem .1rem;
+  border-bottom: 1px solid transparent;
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.hero-cta-secondary svg { transition: transform .3s var(--ease); }
+.hero-cta-secondary:hover {
+  color: var(--ink);
+  border-color: var(--ink-28);
+}
+.hero-cta-secondary:hover svg { transform: translateY(2px); }
+
+/* CTA */
+.hero-cta--split {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--fb);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 1.05rem 2.3rem;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 14px 28px -16px rgba(10,20,32,.4);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+
+.hero-cta--split::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, var(--steel-dk), var(--gold-dk));
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+}
+.hero-cta--split::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -100%;
+  width: 55%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.32), transparent);
+  transition: left .6s var(--ease);
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-cta--split span,
+.hero-cta--split svg { position: relative; z-index: 1; }
+.hero-cta--split svg { transition: transform .3s var(--ease); }
+
+.hero-cta--split:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px -16px rgba(10,20,32,.48);
+}
+.hero-cta--split:hover::before { opacity: 1; }
+.hero-cta--split:hover::after { left: 140%; }
+.hero-cta--split:hover svg { transform: translateX(4px); }
+
+/* ── Responsive hero ── */
+@media (max-width: 1023px) {
+  .hero-center-layout { padding: 1.75rem 2rem 2rem; }
+  .hero-brand-img { max-width: 260px; } /* Ajustado también aquí */
+}
+
+@media (max-width: 680px) {
+  .hero-center-layout { padding: 1.5rem 1.25rem 1.5rem; }
+  .hero-brand-img { max-width: 200px; }
+  .hero-divider { margin: 1.4rem auto; }
+  .hero-visual-col { margin: 1rem 0 1.4rem; }
+  .hero-headline { margin-bottom: 2.2rem; }
+
+  .hero-facts {
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.5rem 0;
+    margin-bottom: 2.2rem;
+  }
+  .hero-fact { padding: 0 .5rem; }
+  .hero-fact + .hero-fact {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-top: 1.4rem;
+  }
+
+  .hero-actions { gap: 1.4rem; flex-direction: column; }
+}
+
+/* ── Hero centrado: ajustes desktop (Unificado) ── */
+@media (min-width: 1024px) {
+  .hero-center-layout {
+    padding: 1.75rem 4vw 3.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-message-col {
+    padding-top: .5rem;
+  }
+
+  /* Truco para expandir la imagen a 1500px y centrarla sin usar 100vw */
+  .hero-visual-col {
+    width: 1500px;
+    margin-left: calc(50% - 750px);
+    margin-right: calc(50% - 750px);
+  }
+}
+
+/* ══════════════ PARTNER SEPARATOR ══════════════ */
+.partner-separator {
+  position: relative;
+  background: var(--warm);
+  padding: 1.2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Línea sutil que une al hero */
+.partner-separator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}
+
+/* Glow inferior que se disipa hacia origin */
+.partner-separator::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 80px;
+  background: radial-gradient(ellipse at center, rgba(184,134,46,.07), transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.partner-separator-label {
+  font-family: var(--fm);
+  font-size: .55rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-42);
+  margin-bottom: .5rem;
+}
+
+.partner-separator-names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .5rem 1.2rem;
+}
+
+.partner-separator-names span {
+  font-family: var(--fb);
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--ink-85);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+
+.partner-separator-glyph {
+  width: 3px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: .45;
+}
+
+@media (max-width: 680px) {
+  .partner-separator { padding: 1rem 1.25rem; }
+  .partner-separator-names span { font-size: .88rem; }
+}
+
+/* ── scroll-reveal ── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ══════════════ EYEBROW (label compartido entre headers de sección) ══════════════ */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font-family: var(--fm);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+}
+.eyebrow-mark {
+  width: 13px;
+  height: 14px;
+  flex-shrink: 0;
+  background: #36B5B9;
+  opacity: .9;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16.7 13.6 81.5 88.2'%3E%3Cpath d='M60.7,101.2c-2.8.9-4.5.7-7.1,0l-34.3-11.7c-1-.3-1.9-.5-2.3-1.2-.6-1.1-.2-2,.4-3.1l27.8-52.2,10.1-18.7c.5-1,3.7-.9,4.3,0l5.7,10.4,32.6,61.5c.7,1.4,0,2.6-1.2,3l-35.9,12.1h-.1ZM54.2,70l.2-32.8c0-2.3.3-4.6-.6-6.5l-11.9,44.5,12.3-5.2ZM72.7,75.1l-5.8-21.9c-2.2-7.5-3.5-14.9-6.6-22.7v39.6c0,0,12.3,4.9,12.3,4.9h.1ZM91.9,83.1l-16.8-32.1c-3.3-5.7-5.5-11.4-9.6-17.1l11.5,43.2s14.9,6,14.9,6ZM37.8,77l10.5-41.7-25.1,46.6c-.3.6.3,1.2.8,1,0,0,13.8-5.9,13.8-5.9ZM54.2,94.3v-19.9l-11.8,5,11.8,15h0ZM72.3,79.4l-12-5v20.6l12-15.6ZM49.8,95.7l-11.1-15.1-14.7,6.4s25.8,8.7,25.8,8.7ZM90.4,87.1l-14.6-6.3-10.9,15,25.5-8.7Z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16.7 13.6 81.5 88.2'%3E%3Cpath d='M60.7,101.2c-2.8.9-4.5.7-7.1,0l-34.3-11.7c-1-.3-1.9-.5-2.3-1.2-.6-1.1-.2-2,.4-3.1l27.8-52.2,10.1-18.7c.5-1,3.7-.9,4.3,0l5.7,10.4,32.6,61.5c.7,1.4,0,2.6-1.2,3l-35.9,12.1h-.1ZM54.2,70l.2-32.8c0-2.3.3-4.6-.6-6.5l-11.9,44.5,12.3-5.2ZM72.7,75.1l-5.8-21.9c-2.2-7.5-3.5-14.9-6.6-22.7v39.6c0,0,12.3,4.9,12.3,4.9h.1ZM91.9,83.1l-16.8-32.1c-3.3-5.7-5.5-11.4-9.6-17.1l11.5,43.2s14.9,6,14.9,6ZM37.8,77l10.5-41.7-25.1,46.6c-.3.6.3,1.2.8,1,0,0,13.8-5.9,13.8-5.9ZM54.2,94.3v-19.9l-11.8,5,11.8,15h0ZM72.3,79.4l-12-5v20.6l12-15.6ZM49.8,95.7l-11.1-15.1-14.7,6.4s25.8,8.7,25.8,8.7ZM90.4,87.1l-14.6-6.3-10.9,15,25.5-8.7Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* ══ FIRMA DE MARCA: el ícono facetado del logo (mismo path que LOGO_DAC.svg), único acento grande de la página ══ */
+.closing-signature {
+  position: absolute;
+  right: -4%;
+  bottom: -10%;
+  width: 38%;
+  max-width: 420px;
+  min-width: 260px;
+  height: auto;
+  opacity: .16;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════ ORIGIN ══════════════ */
+.origin {
+  position: relative;
+  background: var(--stone);
+  padding: 5.5rem 2.5rem;
+  overflow: hidden;
+}
+
+.origin::before {
+  content: '';
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  width: 1000px;
+  height: 520px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 32% 50%, rgba(184,134,46,.11), transparent 62%),
+    radial-gradient(ellipse at 68% 50%, rgba(15,111,102,.11), transparent 62%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.origin-head {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+.origin-eyebrow { transition-delay: 0ms; }
+.origin-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin: 1.1rem 0 1.4rem;
+  text-wrap: balance;
+  transition-delay: 120ms;
+}
+.origin-title em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--gold-dk);
+}
+.origin-lede {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  max-width: 520px;
+  margin: 0 auto;
+  transition-delay: 240ms;
+}
+.origin-lede strong {
+  color: var(--ink-85);
+  font-weight: 600;
+}
+
+.origin-stages {
+  --circle: 152px;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: start;
+  gap: 0 1.5rem;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stage-circle {
+  width: var(--circle);
+  height: var(--circle);
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background:
+    radial-gradient(circle at 50% 38%, var(--accent-tint), transparent 70%),
+    var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.85rem;
+  box-shadow: 0 22px 36px -26px var(--accent-shadow);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.stage:hover .stage-circle {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px) scale(1.02);
+  box-shadow: 0 26px 40px -22px var(--accent-shadow);
+}
+
+.stage-icon {
+  width: 54px;
+  height: 54px;
+  color: var(--accent);
+}
+
+.stage-circle--grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: .4rem;
+  padding: 1.3rem;
+}
+.crypto-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(184,134,46,.09);
+  color: var(--gold-dk);
+  font-family: var(--fm);
+  font-size: .5rem;
+  font-weight: 600;
+}
+.crypto-chip--more {
+  background: rgba(10,20,32,.05);
+  color: var(--ink-42);
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+.stage-arrow {
+  height: var(--circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-28);
+}
+.stage-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stage-label {
+  font-family: var(--fm);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .85rem;
+}
+.stage-title {
+  font-family: var(--fb);
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: .7rem;
+  max-width: 260px;
+}
+.stage-desc {
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  color: var(--ink-60);
+  line-height: 1.65;
+  max-width: 250px;
+}
+
+.stage--gold { --accent: var(--gold); --accent-tint: rgba(184,134,46,.08); --accent-shadow: rgba(184,134,46,.3); }
+.stage--ink  { --accent: var(--ink);  --accent-tint: rgba(10,20,32,.05);   --accent-shadow: rgba(10,20,32,.22); }
+.stage--teal { --accent: var(--teal); --accent-tint: rgba(15,111,102,.08); --accent-shadow: rgba(15,111,102,.28); }
+.stage--ink .stage-label { color: var(--ink-85); }
+
+.origin-stages .stage:nth-child(1) { transition-delay: 0ms; }
+.origin-stages .stage:nth-child(3) { transition-delay: 120ms; }
+.origin-stages .stage:nth-child(5) { transition-delay: 240ms; }
+
+@media (max-width: 900px) {
+  .origin { padding: 4.25rem 2rem; }
+  .origin-stages { --circle: 128px; gap: 0 1rem; }
+  .stage-icon { width: 46px; height: 46px; }
+  .stage-title, .stage-desc { max-width: 210px; }
+}
+
+@media (max-width: 680px) {
+  .nav, .nav.is-scrolled { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .origin { padding: 3.75rem 1.25rem; }
+  .origin-head { margin-bottom: 1.75rem; }
+  .origin-stages {
+    grid-template-columns: 1fr;
+    gap: 0;
+    --circle: 116px;
+  }
+  .stage-icon { width: 42px; height: 42px; }
+  .stage-title, .stage-desc { max-width: 280px; }
+  .stage-circle--grid { padding: 1.05rem; gap: .3rem; }
+  .crypto-chip { font-size: .46rem; }
+  .stage-arrow {
+    height: auto;
+    padding: 1.4rem 0;
+  }
+  .stage-arrow svg { transform: rotate(90deg); }
+}
+
+/* ══════════════ METODOLOGÍA (section 3) ══════════════ */
+#metodologia {
+  --meth-navy:  var(--ink);
+  --meth-teal:  var(--teal);
+  --meth-gold:  var(--gold);
+  --meth-text-2: var(--ink-60);
+  --meth-border: var(--line);
+
+  position: relative;
+  background: var(--paper);
+  padding: 8rem 2.5rem;
+  overflow: hidden;
+}
+
+.meth-header {
+  position: relative;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 2rem;
+}
+.meth-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  line-height: 1.22;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin: 1rem 0 0;
+  text-wrap: balance;
+  transition-delay: 120ms;
+}
+.meth-subtitle {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--meth-text-2);
+  transition-delay: 240ms;
+}
+
+/* ── desktop / tablet: bridge view ── */
+.meth-desktop { display: block; }
+
+.bridge-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.bridge-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.bridge-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 820px;
+  min-width: 0;
+  max-width: 1040px;
+}
+
+.hotspot-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .85rem;
+  width: 100%;
+  margin-bottom: 2.25rem;
+}
+
+.eco-panel {
+  flex: 0 0 148px;
+  width: 148px;
+}
+.eco-panel h5 {
+  font-family: var(--fm);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-42);
+  margin-bottom: 1.1rem;
+}
+.eco-left h5 { text-align: right; }
+.eco-panel ul {
+  list-style: none;
+}
+.eco-panel li {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--fb);
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--meth-text-2);
+  margin-bottom: .65rem;
+  line-height: 1.3;
+}
+.eco-left li { flex-direction: row-reverse; text-align: right; }
+.eco-icon { width: 15px; height: 15px; flex-shrink: 0; color: var(--ink-42); }
+.eco-left .eco-icon { color: var(--steel); }
+.eco-right .eco-icon { color: var(--meth-gold); }
+
+/* Punto de anclaje de cada hilo: se ubica junto al ícono, del lado que mira al puente */
+.eco-dot {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.eco-left .eco-dot { background: var(--steel); }
+.eco-right .eco-dot { background: var(--meth-gold); }
+
+.bridge-frame {
+  position: relative;
+  width: 100%;
+}
+.bridge-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Anclas donde la roca se une al tablero: punto de referencia para initBridgeWires + anillo de convergencia */
+.bridge-anchor {
+  position: absolute;
+  top: 6%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.bridge-anchor--left { left: 18%; }
+.bridge-anchor--right { left: 82%; }
+.bridge-anchor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1.5px solid var(--steel);
+  background: var(--paper);
+  opacity: 0;
+  transition: opacity .8s var(--ease) .3s;
+}
+.bridge-anchor--right::before { border-color: var(--meth-gold); }
+.bridge-row.bridge-wires-visible .bridge-anchor::before { opacity: 1; }
+
+/* ── Hilos que convergen en el puente ── */
+.bridge-wires {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.bridge-wires path {
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.bridge-wires .wire-left { stroke: var(--steel); opacity: .5; }
+.bridge-wires .wire-right { stroke: var(--meth-gold); opacity: .55; }
+
+/* Cometa de luz que recorre cada hilo (izq → puente → der); pausada hasta que #metodologia entra en viewport */
+.bridge-wires .wire-flow {
+  stroke-width: 2;
+  opacity: .95;
+  animation-name: bridge-flow-dash;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.bridge-wires.flow-active .wire-flow { animation-play-state: running; }
+
+@keyframes bridge-flow-dash {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: var(--flow-shift); }
+}
+
+.pillar-icon-row {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  margin-bottom: 14px;
+}
+.pillar-icon {
+  justify-self: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--pi-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 20px -12px rgba(10,20,32,.3);
+  transition: opacity 1.2s var(--ease), transform .5s var(--ease);
+}
+.pillar-icon:hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px) scale(1.08); }
+.pillar-icon svg { width: 22px; height: 22px; color: var(--pi-accent); }
+.pillar-icon:nth-child(1) { --pi-accent: var(--meth-navy); transition-delay: 0ms; }
+.pillar-icon:nth-child(2) { --pi-accent: var(--meth-teal); transition-delay: 120ms; }
+.pillar-icon:nth-child(3) { --pi-accent: var(--meth-navy); transition-delay: 240ms; }
+.pillar-icon:nth-child(4) { --pi-accent: var(--meth-teal); transition-delay: 360ms; }
+
+.hotspot {
+  position: relative;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: .85rem .7rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 14px 28px -18px rgba(10,20,32,.22);
+  border: 1px solid rgba(10,20,32,.05);
+  transition: opacity 1.2s var(--ease), transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+.hotspot:hover {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+  box-shadow: 0 20px 40px -16px rgba(10,20,32,.25);
+  border-color: rgba(10,20,32,.1);
+}
+.hotspot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--hs-accent), transparent);
+  transform: translateX(-50%);
+}
+.hotspot:nth-child(odd)  { --hs-accent: var(--meth-navy); }
+.hotspot:nth-child(even) { --hs-accent: var(--meth-teal); }
+.hotspot-row .hotspot:nth-child(1) { transition-delay: 0ms; }
+.hotspot-row .hotspot:nth-child(2) { transition-delay: 120ms; }
+.hotspot-row .hotspot:nth-child(3) { transition-delay: 240ms; }
+.hotspot-row .hotspot:nth-child(4) { transition-delay: 360ms; }
+.hotspot-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fb);
+  font-size: .72rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--hs-accent);
+  margin-bottom: .55rem;
+}
+.hotspot h4 {
+  font-family: var(--fb);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: .3rem;
+}
+.hotspot p {
+  font-family: var(--fb);
+  font-size: .68rem;
+  font-weight: 400;
+  color: var(--meth-text-2);
+  line-height: 1.42;
+}
+.hotspot-small {
+  font-family: var(--fm);
+  font-size: .58rem !important;
+  color: var(--ink-42) !important;
+  margin-bottom: .3rem !important;
+}
+
+.patrimonio-center {
+  position: relative;
+  text-align: center;
+  max-width: 480px;
+  margin: 3.5rem auto 0;
+}
+.patrimonio-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto .9rem;
+  border-radius: 50%;
+  border: 2px solid var(--meth-gold);
+  background: radial-gradient(circle at 50% 38%, rgba(184,134,46,.08), transparent 70%), var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 34px -24px rgba(184,134,46,.4);
+}
+.patrimonio-center h3 {
+  font-family: var(--fm);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--meth-gold);
+  margin-bottom: .55rem;
+}
+.patrimonio-center p {
+  font-family: var(--fb);
+  font-size: .92rem;
+  color: var(--meth-text-2);
+  line-height: 1.6;
+}
+
+.benefits-wrap {
+  position: relative;
+  max-width: 1000px;
+  margin: 5rem auto 0;
+  padding-top: 3.5rem;
+}
+.benefits-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 84px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--steel), var(--meth-gold), var(--meth-teal));
+  opacity: .6;
+}
+.benefits-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.75rem;
+}
+.benefit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .95rem;
+}
+.benefit-icon-circle {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--meth-gold);
+  background: radial-gradient(circle at 50% 38%, rgba(184,134,46,.08), transparent 70%), var(--paper);
+  box-shadow: 0 16px 26px -20px rgba(184,134,46,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.benefit-item:hover .benefit-icon-circle {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px) scale(1.06);
+  box-shadow: 0 20px 30px -18px rgba(184,134,46,.6);
+}
+.benefit-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--meth-gold); }
+.benefit-item span {
+  font-family: var(--fb);
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.45;
+  max-width: 150px;
+}
+
+.benefits-bar .benefit-item:nth-child(1) { transition-delay: 0ms; }
+.benefits-bar .benefit-item:nth-child(2) { transition-delay: 120ms; }
+.benefits-bar .benefit-item:nth-child(3) { transition-delay: 240ms; }
+.benefits-bar .benefit-item:nth-child(4) { transition-delay: 360ms; }
+.benefits-bar .benefit-item:nth-child(5) { transition-delay: 480ms; }
+
+.meth-mobile { display: none; }
+
+/* ── Bloque digital ⇄ puente recortado ⇄ institucional (mobile) ──
+   Sin líneas: la asociación se comunica por continuidad de layout (todo dentro
+   de un mismo fondo, sin separación) y por color (barra steel/gold pegada al
+   borde donde cada panel conecta con la imagen). ── */
+.bridge-mobile-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--warm);
+  border-radius: 14px;
+  padding: 1.75rem 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+/* .eco-panel se reutiliza tal cual (icono + color steel/gold), solo cambia el layout de columna angosta a ancho completo */
+.meth-mobile .eco-panel { flex: none; width: 100%; }
+.meth-mobile .eco-panel h5 { text-align: center; margin-bottom: .9rem; }
+.meth-mobile .eco-panel ul {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: .5rem 1.75rem;
+}
+.meth-mobile .eco-panel li { flex-direction: row; text-align: left; font-size: .76rem; margin-bottom: 0; }
+.meth-mobile .eco-panel .eco-icon { width: 15px; height: 15px; }
+
+/* barra de color pegada al borde que conecta con el puente */
+.meth-mobile .eco-panel.eco-left { border-bottom: 3px solid var(--steel); padding-bottom: 1.4rem; }
+.meth-mobile .eco-panel.eco-right { border-top: 3px solid var(--meth-gold); padding-top: 1.4rem; }
+
+.bridge-frame-mobile {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.bridge-img-mobile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  display: block;
+}
+
+.step-card {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--meth-border);
+  position: relative;
+  overflow: hidden;
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease), opacity 1.2s var(--ease);
+  transition-delay: 60ms;
+}
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -14px rgba(10,20,32,.18);
+  border-color: rgba(10,20,32,.12);
+}
+.step-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.step-card--navy::before { background: var(--meth-navy); }
+.step-card--teal::before { background: var(--meth-teal); }
+
+.step-header { display: flex; align-items: flex-start; gap: .9rem; }
+.step-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fb);
+  font-size: .78rem;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+.step-card--navy .step-num { background: var(--meth-navy); }
+.step-card--teal .step-num { background: var(--meth-teal); }
+.step-header h4 {
+  font-family: var(--fb);
+  font-size: .98rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: .3rem;
+}
+.step-acronym {
+  display: block;
+  font-family: var(--fm);
+  font-size: .64rem;
+  font-weight: 500;
+  color: var(--ink-42);
+  margin-top: .15rem;
+}
+.step-desc {
+  font-family: var(--fb);
+  font-size: .84rem;
+  color: var(--meth-text-2);
+  line-height: 1.55;
+  margin-top: .35rem;
+}
+
+.step-arrow { text-align: center; margin: .6rem 0; color: var(--ink-28); }
+.step-arrow svg { width: 18px; height: 18px; }
+
+.mobile-patrimonio {
+  margin: 2rem 0;
+  padding: 1.75rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--meth-gold);
+  background: rgba(184,134,46,.04);
+  text-align: center;
+}
+.mobile-patrimonio .patrimonio-icon { box-shadow: none; }
+.mobile-patrimonio h3 { font-size: .74rem; color: var(--meth-gold); }
+.mobile-patrimonio p { color: var(--meth-text-2); }
+
+.benefits-mobile { display: grid; grid-template-columns: 1fr; gap: .65rem; margin-top: 1.5rem; }
+.benefits-mobile .benefit-item {
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  gap: .8rem;
+  background: var(--paper);
+  padding: .85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--meth-border);
+}
+.benefits-mobile .benefit-item span { max-width: none; }
+.benefits-mobile .benefit-icon { color: var(--meth-navy); }
+
+@media (max-width: 1024px) {
+  .eco-panel { flex: 0 0 118px; width: 118px; }
+  .eco-panel li { font-size: .68rem; }
+  .eco-icon { width: 13px; height: 13px; }
+  .hotspot { padding: .7rem .55rem 1.3rem; }
+  .hotspot h4 { font-size: .68rem; }
+  .hotspot p { font-size: .62rem; }
+  .bridge-row { gap: 1.1rem; }
+  .pillar-icon-row { margin-bottom: 10px; }
+  .pillar-icon { width: 42px; height: 42px; }
+  .pillar-icon svg { width: 18px; height: 18px; }
+  .hotspot-row { gap: .6rem; }
+  .benefits-bar { gap: 1rem; }
+  .benefit-icon-circle { width: 44px; height: 44px; }
+  .benefit-icon { width: 18px; height: 18px; }
+  .benefit-item span { font-size: .72rem; max-width: 128px; }
+}
+
+@media (max-width: 900px) {
+  #metodologia { padding: 4.25rem 2rem; }
+}
+
+@media (max-width: 767px) {
+  #metodologia { padding: 3.75rem 1.25rem; }
+  .meth-header { margin-bottom: 1.75rem; }
+  .meth-desktop { display: none; }
+  .meth-mobile { display: block; max-width: 480px; margin: 0 auto; }
+}
+
+/* ══════════════ SCROLL PROGRESS ══════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 200;
+  pointer-events: none;
+  background: transparent;
+}
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--steel), var(--gold));
+  transform-origin: 0 0;
+  transform: scaleX(0);
+  transition: transform .08s linear;
+}
+
+/* ══════════════ MAGNETIC BUTTONS ══════════════ */
+.has-magnetic { display: inline-flex; position: relative; isolation: isolate; }
+.magnetic-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: inherit;
+  will-change: transform;
+}
+
+/* ══════════════ TILT (stages / hotspots) ══════════════ */
+.has-tilt {
+  --rx: 0deg; --ry: 0deg;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+}
+
+/* ══════════════ HERO CURSOR GLOW ══════════════ */
+.hero-visual-frame {
+  --mx: 50%;
+  --my: 50%;
+}
+.hero-cursor-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(320px circle at var(--mx) var(--my), rgba(184,134,46,.16), transparent 60%);
+  mix-blend-mode: soft-light;
+  transition: opacity .5s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-visual-frame:hover .hero-cursor-glow { opacity: 1; }
+}
+
+/* ══════════════ CIERRE / CONTACTO ══════════════ */
+.closing {
+  position: relative;
+  background: var(--ink);
+  padding: 5.5rem 2.5rem;
+  overflow: hidden;
+  text-align: center;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  top: -220px;
+  left: 50%;
+  width: 1100px;
+  height: 560px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(184,134,46,.16), transparent 62%),
+    radial-gradient(ellipse at 70% 50%, rgba(15,111,102,.14), transparent 62%);
+  filter: blur(70px);
+  pointer-events: none;
+}
+.closing-inner {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.closing-eyebrow {
+  font-family: var(--fm);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 1.4rem;
+}
+.closing-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.2;
+  letter-spacing: -.03em;
+  color: #fff;
+  margin-bottom: 1.4rem;
+  text-wrap: balance;
+}
+.closing-lede {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255,255,255,.62);
+  margin-bottom: 2.8rem;
+}
+.closing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+}
+.closing-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--fb);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 1.05rem 2.3rem;
+  border-radius: 100px;
+  text-decoration: none;
+  box-shadow: 0 14px 32px -14px rgba(0,0,0,.5);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.closing-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -14px rgba(0,0,0,.6);
+}
+.closing-cta svg { transition: transform .3s var(--ease); }
+.closing-cta:hover svg { transform: translateX(4px); }
+.closing-email {
+  font-family: var(--fb);
+  font-size: .85rem;
+  font-weight: 400;
+  color: rgba(255,255,255,.55);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+  padding-bottom: 2px;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.closing-email:hover { color: #fff; border-color: rgba(255,255,255,.6); }
+
+/* ══════════════ FOOTER ══════════════ */
+.site-footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 2.6rem 2.5rem;
+}
+.site-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+.site-footer-logo img { height: 22px; width: auto; opacity: .85; }
+.site-footer-legal {
+  font-family: var(--fb);
+  font-size: .74rem;
+  color: rgba(255,255,255,.42);
+}
+
+@media (max-width: 680px) {
+  .closing { padding: 3.75rem 1.25rem; }
+  .closing-actions { flex-direction: column; gap: 1.1rem; }
+  .site-footer { padding: 2rem 1.25rem; text-align: center; }
+  .site-footer-inner { flex-direction: column; }
+}
+/* ══════════════ DIAGNÓSTICO ESTRATÉGICO ══════════════ */
+.diagnostico {
+  position: relative;
+  background: var(--ink);
+  padding: 7.5rem 2.5rem;
+  overflow: visible;
+}
+
+.diagnostico .eyebrow { color: var(--gold-soft); font-size: .82rem; letter-spacing: .18em; gap: .7rem; }
+.diagnostico .eyebrow-mark { width: 16px; height: 17px; }
+.diagnostico .diag-title { color: #fff; }
+.diagnostico .diag-lede { color: rgba(255,255,255,.7); }
+.diagnostico .diag-desc { color: rgba(255,255,255,.65); }
+.diagnostico .diag-list--fallback li { color: rgba(255,255,255,.85); }
+@media (min-width: 681px) {
+  .diagnostico .diag-benefit-item span { color: rgba(255,255,255,.85); }
+}
+
+/* Glow de transición desde metodología */
+.diagnostico::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(63,90,118,.08), transparent 60%),
+    radial-gradient(ellipse at 65% 40%, rgba(184,134,46,.09), transparent 60%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.diagnostico-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* ── Header ── */
+.diag-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 2rem;
+}
+
+.diag-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin: 1rem 0 1.2rem;
+  text-wrap: balance;
+}
+
+.diag-lede {
+  font-family: var(--fb);
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-60);
+}
+
+/* ═══ SHOWCASE: imagen protagonista + labels flotantes ═══ */
+.diag-showcase {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  padding: 0 1rem;
+}
+
+.diag-visual-frame {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1440px) {
+  .diag-visual-frame { max-width: 860px; }
+}
+
+.diag-visual-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.diag-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 45%;
+  height: 55%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(15,111,102,.10), transparent 65%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Labels flotantes con efecto premium ── */
+.diag-annotation {
+  position: absolute;
+  font-family: var(--fb);
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--ink-85);
+  line-height: 1.35;
+  max-width: 190px;
+  z-index: 2;
+  
+  /* Efecto glassmorphism sutil */
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(10, 20, 32, 0.06);
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  box-shadow: 0 8px 24px -10px rgba(10, 20, 32, 0.12);
+  
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+
+/* Bullet dorado conector en el borde */
+.diag-annotation::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.7;
+  box-shadow: 0 0 0 3px rgba(184, 134, 46, 0.12);
+}
+
+/* ═══ POSICIONES: aire respecto a la imagen recortada ═══ */
+.diag-annotation--tl {
+  top: 8%;
+  left: -135px;
+  text-align: right;
+}
+.diag-annotation--tl::after { right: -9px; }
+
+.diag-annotation--tr {
+  top: 8%;
+  right: -145px;
+  text-align: left;
+}
+.diag-annotation--tr::after { left: -9px; }
+
+.diag-annotation--ml {
+  top: 30%;
+  left: -220px;
+  text-align: right;
+}
+.diag-annotation--ml::after { right: -9px; }
+
+.diag-annotation--mr {
+  top: 30%;
+  right: -195px;
+  text-align: left;
+}
+.diag-annotation--mr::after { left: -9px; }
+
+.diag-annotation--bl {
+  top: 60%;
+  left: -165px;
+  text-align: right;
+}
+.diag-annotation--bl::after { right: -9px; }
+
+.diag-annotation--br {
+  top: 60%;
+  right: -145px;
+  text-align: left;
+}
+.diag-annotation--br::after { left: -9px; }
+
+/* ── Cuerpo textual debajo de la imagen ── */
+.diag-body {
+  max-width: 640px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.diag-desc {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  margin-bottom: 2.2rem;
+}
+
+/* Lista fallback (visible en tablet/mobile) */
+.diag-list--fallback {
+  display: none;
+  list-style: none;
+  flex-direction: column;
+  gap: .8rem;
+  margin: 0 0 2.2rem;
+  padding: 0;
+  text-align: left;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.diag-list--fallback li {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.4;
+}
+
+.diag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: .6;
+  flex-shrink: 0;
+}
+
+/* Caja resultado */
+.diag-result {
+  position: relative;
+  background: var(--warm);
+  border-radius: 12px;
+  padding: 1.6rem 1.8rem;
+  border-left: 3px solid var(--gold);
+  text-align: left;
+  display: inline-block;
+  max-width: 520px;
+  width: 100%;
+}
+
+.diag-result-label {
+  display: block;
+  font-family: var(--fm);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+  margin-bottom: .6rem;
+}
+
+.diag-result p {
+  font-family: var(--fb);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ── Benefits grid ── */
+.diag-benefits {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 2.5rem;
+  position: relative;
+}
+
+.diag-benefits::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 84px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--steel), var(--gold), var(--teal));
+  opacity: .5;
+}
+
+.diag-benefit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .9rem;
+}
+
+.diag-benefit-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--steel-soft);
+  background: radial-gradient(circle at 50% 38%, rgba(63,90,118,.06), transparent 70%), var(--paper);
+  box-shadow: 0 14px 24px -18px rgba(63,90,118,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--steel);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+
+.diag-benefit-item:hover .diag-benefit-icon {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--gold-soft);
+  box-shadow: 0 18px 28px -16px rgba(184,134,46,.35);
+}
+
+.diag-benefit-icon svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.diag-benefit-item span {
+  font-family: var(--fb);
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.45;
+  max-width: 150px;
+}
+
+/* Delays escalonados */
+.diag-benefits .diag-benefit-item:nth-child(1) { transition-delay: 0ms; }
+.diag-benefits .diag-benefit-item:nth-child(2) { transition-delay: 100ms; }
+.diag-benefits .diag-benefit-item:nth-child(3) { transition-delay: 200ms; }
+.diag-benefits .diag-benefit-item:nth-child(4) { transition-delay: 300ms; }
+.diag-benefits .diag-benefit-item:nth-child(5) { transition-delay: 400ms; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+
+/* Tablet: ocultar labels flotantes, mostrar lista */
+@media (max-width: 1050px) {
+  .diag-annotation { display: none; }
+  .diag-list--fallback { display: flex; }
+  .diag-showcase { margin-bottom: 3rem; }
+  .diag-visual-frame { max-width: 560px; }
+}
+
+@media (max-width: 1024px) {
+  .diagnostico { padding: 4.25rem 2rem; }
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .diagnostico { padding: 3.75rem 1.25rem; }
+  .diag-header { margin-bottom: 1.75rem; }
+  .diag-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+  .diag-showcase { padding: 0; margin-bottom: 2.5rem; }
+  .diag-visual-frame { max-width: 100%; }
+  .diag-glow { filter: blur(35px); }
+  .diag-body { margin-bottom: 3rem; }
+  .diag-result { padding: 1.3rem 1.4rem; }
+  .diag-result p { font-size: .98rem; }
+  .diag-benefits { grid-template-columns: 1fr; gap: 1rem; }
+  .diag-benefit-item {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: .8rem;
+    background: var(--warm);
+    padding: .85rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+  .diag-benefit-item span { max-width: none; }
+}
+
+/* ══════════════ OCAPS ══════════════ */
+.ocaps {
+  position: relative;
+  background: var(--fog);
+  padding: 5.5rem 2.5rem;
+  overflow: visible;
+}
+
+/* Glow de transición desde diagnóstico */
+.ocaps::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(15,111,102,.08), transparent 60%),
+    radial-gradient(ellipse at 65% 40%, rgba(63,90,118,.07), transparent 60%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ocaps-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* ── Grid principal ── */
+.ocaps-grid {
+  display: grid;
+  grid-template-columns: 46% 50%;
+  gap: 4%;
+  align-items: start;
+  margin-bottom: 5rem;
+}
+
+/* ═══ Columna texto ═══ */
+.ocaps-text-col {
+  position: relative;
+  padding-top: 1rem;
+}
+
+.ocaps-title {
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  color: var(--ink);
+  margin: 1rem 0 .3rem;
+}
+
+.ocaps-subtitle {
+  font-family: var(--fm);
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1.8rem;
+}
+
+.ocaps-desc {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.15vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+/* Caja pregunta */
+.ocaps-question {
+  position: relative;
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem 1.4rem 3.6rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 16px 40px -18px rgba(10,20,32,.35);
+}
+
+.ocaps-q-mark {
+  position: absolute;
+  top: 1.35rem;
+  left: 1.2rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-soft);
+  color: var(--gold-soft);
+  font-family: var(--fb);
+  font-size: .95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ocaps-question p {
+  font-family: var(--fb);
+  font-size: .98rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255,255,255,.88);
+  margin: 0;
+}
+
+/* Checklist */
+.ocaps-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  margin: 0 0 2.2rem;
+  padding: 0;
+  max-width: 480px;
+}
+
+.ocaps-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.45;
+}
+
+.ocaps-checklist li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: .12rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--teal-soft);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%230F6F66' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/68% no-repeat;
+}
+
+/* Proceso DAC */
+.ocaps-proceso {
+  position: relative;
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--teal-soft);
+}
+
+.ocaps-proceso-label {
+  display: block;
+  font-family: var(--fm);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: .4rem;
+}
+
+.ocaps-proceso p {
+  font-family: var(--fb);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-60);
+  margin: 0;
+}
+
+/* ═══ Columna imagen ═══ */
+.ocaps-visual-col {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ocaps-frame {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+}
+
+@media (min-width: 1440px) {
+  .ocaps-frame { max-width: 640px; }
+}
+
+.ocaps-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.ocaps-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 60%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(15,111,102,.12), transparent 65%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Labels flotantes ── */
+.ocaps-label {
+  position: absolute;
+  font-family: var(--fb);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--ink-85);
+  line-height: 1.3;
+  max-width: 160px;
+  z-index: 2;
+  
+  /* Glassmorphism sutil */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(10, 20, 32, 0.06);
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+  box-shadow: 0 8px 24px -10px rgba(10, 20, 32, 0.12);
+  
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+
+/* Bullet conector */
+.ocaps-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--teal);
+  opacity: 0.6;
+  box-shadow: 0 0 0 3px rgba(15, 111, 102, 0.1);
+}
+
+/* Posiciones ajustadas a la imagen frame_5.png */
+.ocaps-label--blockchain {
+  top: 2%;
+  left: -110px;
+  text-align: right;
+}
+.ocaps-label--blockchain::after { right: -8px; }
+
+.ocaps-label--identity {
+  top: 2%;
+  right: -120px;
+  text-align: left;
+}
+.ocaps-label--identity::after { left: -8px; }
+
+.ocaps-label--proceso {
+  top: 42%;
+  right: -50px;
+  text-align: left;
+}
+.ocaps-label--proceso::after { left: -8px; }
+
+.ocaps-label--resultado {
+  bottom: 18%;
+  right: 10px;
+  text-align: left;
+}
+.ocaps-label--resultado::after { left: -8px; }
+
+/* ═══ Resultado destacado ═══ */
+.ocaps-resultado {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 3rem;
+}
+
+.ocaps-resultado::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 84px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--steel), var(--teal), var(--gold));
+  opacity: .5;
+}
+
+.ocaps-resultado-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.ocaps-resultado-text {
+  text-align: center;
+  max-width: 640px;
+}
+
+.ocaps-resultado-label {
+  display: block;
+  font-family: var(--fm);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: .9rem;
+}
+
+.ocaps-resultado-title {
+  font-family: var(--fb);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: .6rem;
+}
+
+.ocaps-resultado-desc {
+  font-family: var(--fb);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink-60);
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .ocaps { padding: 4.25rem 2rem; }
+  .ocaps-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .ocaps-visual-col { order: -1; }
+  .ocaps-frame { max-width: 420px; margin: 0 auto; }
+  .ocaps-label { display: none; } /* En tablet/mobile ocultamos labels flotantes */
+  .ocaps-text-col { max-width: 600px; margin: 0 auto; }
+}
+
+@media (max-width: 680px) {
+  .ocaps { padding: 3.75rem 1.25rem; }
+  .ocaps-title { font-size: clamp(2.2rem, 8vw, 3rem); }
+  .ocaps-frame { max-width: 100%; }
+  .ocaps-question { padding: 1.2rem 1.2rem 1.2rem 3.2rem; }
+  .ocaps-q-mark { top: 1.15rem; left: 1rem; width: 24px; height: 24px; font-size: .85rem; }
+  .ocaps-checklist li { font-size: .88rem; }
+  .ocaps-resultado { padding-top: 2rem; }
+}
+
+/* ══════════════ ESTRUCTURACIÓN PATRIMONIAL ══════════════ */
+.estructuracion {
+  position: relative;
+  background: var(--paper);
+  padding: 2rem 0rem;
+  overflow: visible;
+}
+
+.estructuracion::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(184,134,46,.08), transparent 60%),
+    radial-gradient(ellipse at 65% 40%, rgba(15,111,102,.07), transparent 60%);
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.estructuracion-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.estructuracion-header {
+  display: grid;
+  grid-template-columns: minmax(300px, auto) 1fr;
+  column-gap: 3.5rem;
+  align-items: end;
+  max-width: 1040px;
+  margin: 0 auto 2.5rem;
+  text-align: left;
+}
+.estructuracion-header .eyebrow { grid-column: 1; grid-row: 1; }
+
+.estructuracion-title {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  margin: .6rem 0 0;
+  text-wrap: balance;
+}
+
+.estructuracion-lede {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  font-family: var(--fb);
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-60);
+  align-self: end;
+  padding-bottom: .3rem;
+}
+
+@media (max-width: 900px) {
+  .estructuracion-header {
+    display: block;
+    text-align: center;
+    max-width: 640px;
+  }
+}
+
+.estructuracion-intro {
+  max-width: 800px;
+  margin: 0 auto 0rem;
+}
+
+.estructuracion-intro-text {
+  text-align: center;
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+  margin-bottom: 2rem;
+}
+
+.estructuracion-bullets {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 2.5rem;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.estructuracion-bullets li {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-family: var(--fb);
+  font-size: .92rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.4;
+}
+
+.estructuracion-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: .6;
+  flex-shrink: 0;
+}
+
+.estructuracion-desktop { display: block; }
+
+.estructuracion-frame {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.estructuracion-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.estructuracion-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 55%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(184,134,46,.10), transparent 65%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══ PILARES: textos en la mitad, números subidos, caja estrecha, desplazados a la izquierda ═══ */
+.pillar-wrap {
+  position: absolute;
+  z-index: 2;
+  top: 32%;
+  left: var(--pw-left);
+  width: 13%;
+  height: 34%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Corridos levemente a la izquierda para no tocar el borde derecho del pilar */
+.pillar-wrap--1 { --pw-left: 14.1%; }
+.pillar-wrap--2 { --pw-left: 32.1%; }
+.pillar-wrap--3 { --pw-left: 50.1%; }
+.pillar-wrap--4 { --pw-left: 68.1%; }
+.pillar-wrap--5 { --pw-left: 86.1%; }
+
+.pillar-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 0.1rem;
+}
+
+.pillar-text h4 {
+  font-family: var(--fb);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0 0 0.3rem;
+  max-width: 100%;
+}
+
+.pillar-line {
+  width: 20px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+  margin: 0.15rem 0 0.4rem;
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+.pillar-text p {
+  font-family: var(--fb);
+  font-size: clamp(0.6rem, 0.78vw, 0.7rem);
+  font-weight: 400;
+  color: var(--ink-60);
+  line-height: 1.4;
+  margin: 0;
+  max-width: 100%;
+}
+
+.pillar-num {
+  margin-top: 70%;
+  padding-top: 0.3rem;
+  padding-bottom: 0;
+  font-family: var(--fb);
+  font-size: clamp(1.35rem, 1.9vw, 1.7rem);
+  font-weight: 300;
+  color: var(--ink-28);
+  line-height: 1;
+  opacity: 0.35;
+}
+
+.pillar-wrap--3 .pillar-text h4 { color: var(--teal); }
+.pillar-wrap--3 .pillar-line {
+  background: linear-gradient(90deg, transparent, var(--teal-soft), transparent);
+  opacity: 0.65;
+}
+.pillar-wrap--3 .pillar-num {
+  color: var(--teal);
+  opacity: 0.45;
+}
+
+/* ── Mobile cards ── */
+.estructuracion-mobile { display: none; }
+
+.pillar-cards-mobile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 480px;
+  margin: 0 auto 3rem;
+}
+
+.pillar-card-mobile {
+  position: relative;
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem 1.2rem;
+  border: 1px solid var(--line);
+  text-align: center;
+  overflow: hidden;
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+
+.pillar-card-mobile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -14px rgba(10,20,32,.15);
+  border-color: rgba(10,20,32,.12);
+}
+
+.pillar-card-mobile--center {
+  border-color: rgba(15,111,102,.25);
+  background: linear-gradient(180deg, rgba(15,111,102,.04), var(--paper));
+}
+
+.pillar-card-mobile h4 {
+  font-family: var(--fb);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0 0 0.35rem;
+}
+
+.pillar-card-mobile--center h4 {
+  color: var(--teal);
+}
+
+.pillar-card-mobile p {
+  font-family: var(--fb);
+  font-size: .88rem;
+  color: var(--ink-60);
+  line-height: 1.55;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-card-mobile__num {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 1rem;
+  font-family: var(--fb);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--ink-28);
+  opacity: 0.18;
+  line-height: 1;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pillar-card-mobile--center .pillar-card-mobile__num {
+  color: var(--teal);
+  opacity: 0.25;
+}
+
+/* ── Body textual ── */
+.estructuracion-body {
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.estructuracion-desc {
+  font-family: var(--fb);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--ink-60);
+}
+
+/* ── Benefits finales ── */
+.estructuracion-benefits {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 2.5rem;
+  position: relative;
+}
+
+.estructuracion-benefits::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 84px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--steel), var(--gold), var(--teal));
+  opacity: .5;
+}
+
+.estructuracion-benefit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .9rem;
+}
+
+.estructuracion-benefit-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-soft);
+  background: radial-gradient(circle at 50% 38%, rgba(184,134,46,.08), transparent 70%), var(--paper);
+  box-shadow: 0 14px 24px -18px rgba(184,134,46,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+
+.estructuracion-benefit-item:hover .estructuracion-benefit-icon {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--gold);
+  box-shadow: 0 18px 28px -16px rgba(184,134,46,.5);
+}
+
+.estructuracion-benefit-icon svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.estructuracion-benefit-item span {
+  font-family: var(--fb);
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--ink-85);
+  line-height: 1.45;
+  max-width: 150px;
+}
+
+/* Delays escalonados */
+.estructuracion-benefits .estructuracion-benefit-item:nth-child(1) { transition-delay: 0ms; }
+.estructuracion-benefits .estructuracion-benefit-item:nth-child(2) { transition-delay: 100ms; }
+.estructuracion-benefits .estructuracion-benefit-item:nth-child(3) { transition-delay: 200ms; }
+.estructuracion-benefits .estructuracion-benefit-item:nth-child(4) { transition-delay: 300ms; }
+.estructuracion-benefits .estructuracion-benefit-item:nth-child(5) { transition-delay: 400ms; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .estructuracion { padding: 4.25rem 2rem; }
+  .estructuracion-bullets { gap: 1rem 1.5rem; }
+  .pillar-wrap {
+    top: 42%;
+    width: 13.5%;
+    height: 32%;
+  }
+  .pillar-text h4 {
+    font-size: 0.6rem;
+    margin-bottom: 0.2rem;
+  }
+  .pillar-line {
+    width: 16px;
+    margin: 0.1rem 0 0.3rem;
+  }
+  .pillar-text p {
+    font-size: 0.54rem;
+    line-height: 1.35;
+  }
+  .pillar-num {
+    font-size: 1.15rem;
+    padding-top: 0.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .estructuracion-desktop { display: none; }
+  .estructuracion-mobile { display: block; }
+  .estructuracion-benefits { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .estructuracion-benefit-item span { max-width: 130px; }
+}
+
+@media (max-width: 680px) {
+  .estructuracion { padding: 3.75rem 1.25rem; }
+  .estructuracion-header { margin-bottom: 1.75rem; }
+  .estructuracion-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+  .estructuracion-bullets { grid-template-columns: 1fr; gap: .8rem; max-width: 320px; }
+  .estructuracion-intro { margin-bottom: 2.5rem; }
+  .estructuracion-body { margin-bottom: 2.5rem; }
+  .estructuracion-benefits { grid-template-columns: 1fr; gap: .85rem; }
+  .estructuracion-benefit-item {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: .8rem;
+    background: var(--warm);
+    padding: .85rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+  .estructuracion-benefit-item span { max-width: none; }
+  .estructuracion-benefit-icon { width: 40px; height: 40px; }
+  .estructuracion-benefit-icon svg { width: 16px; height: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <img src="LOGO_DAC.svg" alt="DAC Alliance" width="493" height="120.9">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#origen">Por qué</a></li>
+    <li><a href="#metodologia">Metodología</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="#contacto" data-magnetic data-magnetic-strength="0.25">
+    Solicitar reunión
+    <svg width="11" height="11" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+      <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero hero-center-layout" aria-label="DAC Alliance — Hero">
+  <div class="hero-center-inner">
+
+
+    <!-- Imagen: protagonista, centrada en pantalla -->
+    <div class="hero-visual-col">
+      <div class="hero-visual-frame" id="heroVisualFrame" data-reveal>
+        <video
+          class="hero-visual-img"
+          id="heroVideo"
+          src="animation.mp4"
+          width="1440"
+          height="720"
+          muted
+          playsinline
+          preload="auto"
+        ></video>
+        <div class="hero-visual-glow" aria-hidden="true"></div>
+        <div class="hero-cursor-glow" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Mensaje: eyebrow + titular + ficha de atributos + acciones, debajo del video -->
+    <div class="hero-message-col">
+      <p class="hero-eyebrow" data-reveal>Patrimonio digital institucional</p>
+
+      <h1 class="hero-headline" data-reveal>
+        Ya no alcanza con adquirir activos digitales.
+        El desafío es transformarlos en <em>patrimonio</em>.
+      </h1>
+
+      <div class="hero-facts" data-reveal>
+        <div class="hero-fact">
+          <span class="hero-fact-label">Bancable</span>
+          <p class="hero-fact-desc">Interactúa con el sistema financiero y bancario tradicional.</p>
+        </div>
+        <div class="hero-fact">
+          <span class="hero-fact-label">Heredable</span>
+          <p class="hero-fact-desc">Se transmite entre generaciones sin fricción legal.</p>
+        </div>
+        <div class="hero-fact">
+          <span class="hero-fact-label">Custodiado</span>
+          <p class="hero-fact-desc">Resguardado bajo estándares de custodia institucional.</p>
+        </div>
+      </div>
+
+      <div class="hero-actions" data-reveal>
+        <a class="hero-cta hero-cta--split" href="#contacto" data-magnetic data-magnetic-strength="0.2">
+          <span>Solicitar reunión estratégica</span>
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a class="hero-cta-secondary" href="#metodologia">
+          <span>Ver la metodología</span>
+          <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M2 4.5l4.5 4.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PARTNER SEPARATOR -->
+<div class="partner-separator">
+  <p class="partner-separator-label">Metodología desarrollada conjuntamente por</p>
+  <div class="partner-separator-names">
+    <span>Insight Trust</span>
+    <span class="partner-separator-glyph" aria-hidden="true"></span>
+    <span>Molina Law Boutique</span>
+  </div>
+</div>
+
+<!-- ORIGIN -->
+<section class="origin" id="origen" aria-label="Por qué nace DAC Alliance">
+  <div class="origin-head">
+    <p class="eyebrow origin-eyebrow reveal-up">
+      <span class="eyebrow-mark" aria-hidden="true"></span>
+      <span>Por qué existimos</span>
+    </p>
+    <h2 class="origin-title reveal-up">¿Por qué nace <em>DAC Alliance</em>?</h2>
+    <p class="origin-lede reveal-up">El mercado de activos digitales ha madurado. Pero la mayoría de los holders aún no han logrado dar el salto de convertir sus activos digitales en un <strong>patrimonio digital transgeneracional</strong>, heredable, bien estructurado, eficiente fiscal y operativamente.</p>
+  </div>
+
+  <div class="origin-stages">
+
+    <article class="stage stage--gold reveal-up">
+      <div class="stage-circle stage-circle--grid" role="img" aria-label="Íconos de activos digitales: XRP, Ethereum, USDC, HBAR, QNT y otros">
+        <span class="crypto-chip" aria-hidden="true">XRP</span>
+        <span class="crypto-chip" aria-hidden="true">ETH</span>
+        <span class="crypto-chip" aria-hidden="true">USDC</span>
+        <span class="crypto-chip" aria-hidden="true">HBAR</span>
+        <span class="crypto-chip" aria-hidden="true">QNT</span>
+        <span class="crypto-chip crypto-chip--more" aria-hidden="true">+</span>
+      </div>
+      <p class="stage-label">Primera generación</p>
+      <h3 class="stage-title">Comprar activos digitales</h3>
+      <p class="stage-desc">El foco estaba en adquirir activos digitales de alto potencial.</p>
+    </article>
+
+    <div class="stage-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h18M14 5l7 7-7 7"/></svg>
+    </div>
+
+    <article class="stage stage--ink reveal-up">
+      <div class="stage-circle">
+        <svg class="stage-icon" viewBox="0 0 48 48" fill="none" role="img" aria-label="Billetera digital con verificación de seguridad">
+          <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 17c0-2.1 1.7-3.8 3.8-3.8h19.8l5.4 5.4"/>
+            <rect x="8" y="17" width="32" height="19" rx="3.2"/>
+            <circle cx="33" cy="26.5" r="1.4" fill="currentColor" stroke="none"/>
+          </g>
+          <path d="M14.5 27.2c0-1.3 1.1-2.4 2.4-2.4h4.6c1.3 0 2.4 1.1 2.4 2.4v3.5c0 3.1-2.3 5.1-4.7 6.1-2.4-1-4.7-3-4.7-6.1v-3.5z" fill="var(--paper)" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M17 29.3l1.5 1.5 2.8-3.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="stage-label">Segunda generación</p>
+      <h3 class="stage-title">Custodiarlos correctamente</h3>
+      <p class="stage-desc">El foco pasó a la seguridad: wallets, exchanges, backups y gestión de claves privadas.</p>
+    </article>
+
+    <div class="stage-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h18M14 5l7 7-7 7"/></svg>
+    </div>
+
+    <article class="stage stage--teal reveal-up">
+      <div class="stage-circle">
+        <svg class="stage-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Edificio institucional bancario">
+          <path d="M24 8l16 10H8L24 8z"/>
+          <path d="M9 21h30"/>
+          <path d="M11 21v14M18.3 21v14M29.7 21v14M37 21v14"/>
+          <path d="M7 38h34"/>
+        </svg>
+      </div>
+      <p class="stage-label">Tercera generación</p>
+      <h3 class="stage-title">¿Cómo convertirlos en patrimonio institucional?</h3>
+      <p class="stage-desc">Hoy el desafío es estructurar, documentar y organizar para interactuar con el sistema bancario, TradFi y DeFi.</p>
+    </article>
+
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section id="metodologia" aria-label="Nuestra metodología">
+
+  <div class="meth-header">
+    <p class="eyebrow reveal-up">
+      <span class="eyebrow-mark" aria-hidden="true"></span>
+      <span>Nuestra metodología</span>
+    </p>
+    <h2 class="meth-title reveal-up">El puente para transformar activos digitales dispersos en patrimonio digital institucional.</h2>
+    <div class="hero-divider" aria-hidden="true"></div>
+    <p class="meth-subtitle reveal-up">Metodología propia que coordina disciplinas y procesos para construir un patrimonio preparado para interactuar con el ecosistema institucional.</p>
+  </div>
+
+  <!-- DESKTOP / TABLET -->
+  <div class="meth-desktop">
+    <div class="bridge-wrapper">
+
+      <div class="bridge-row">
+
+      <!-- Hilos SVG: dibujados por JS (initBridgeWires), quedan detrás del puente -->
+      <svg class="bridge-wires" aria-hidden="true">
+        <defs>
+          <linearGradient id="bridgeFlowGradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="0">
+            <stop offset="0%"></stop>
+            <stop offset="100%"></stop>
+          </linearGradient>
+          <filter id="bridgeFlowGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="1.4" result="blur"></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="blur"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </defs>
+        <g class="wire-lines"></g>
+      </svg>
+
+      <div class="eco-panel eco-left reveal-up" aria-label="Ecosistema digital de origen">
+        <h5>Ecosistema Digital</h5>
+        <ul>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18"/><circle cx="17" cy="14" r="1" fill="currentColor" stroke="none"/></svg> Wallets</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h14M13 4l4 4-4 4"/><path d="M21 16H7M11 12l-4 4 4 4"/></svg> Exchanges</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><circle cx="12" cy="6" r="2.2"/><path d="M7.6 16.3L10.6 8M16.4 16.3L13.4 8"/></svg> DeFi</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg> Tokens</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15.5l4.5-4.5 4 4 3.5-3.5L20 15"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/></svg> NFTs</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg> Custodia</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9L12 3z"/></svg> DAOs</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 14.5l9 5 9-5"/></svg> Staking</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg> y otros</li>
+        </ul>
+      </div>
+
+      <div class="bridge-center">
+
+        <div class="hotspot-row">
+          <div class="hotspot reveal-up">
+            <span class="hotspot-num">1</span>
+            <h4>Diagnóstico<br>Estratégico</h4>
+            <p>Comprendemos tu patrimonio digital, tus objetivos y tu situación actual.</p>
+          </div>
+
+          <div class="hotspot reveal-up">
+            <span class="hotspot-num">2</span>
+            <h4>OCAPS</h4>
+            <p class="hotspot-small">On-Chain Asset Patrimony Statement</p>
+            <p>Documentamos y verificamos tus activos digitales en la blockchain.</p>
+          </div>
+
+          <div class="hotspot reveal-up">
+            <span class="hotspot-num">3</span>
+            <h4>Estructuración<br>Patrimonial</h4>
+            <p>Diseñamos la arquitectura jurídica, fiscal y fiduciaria más adecuada para tu patrimonio y objetivos.</p>
+          </div>
+
+          <div class="hotspot reveal-up">
+            <span class="hotspot-num">4</span>
+            <h4>OCACS</h4>
+            <p class="hotspot-small">On-Chain Asset Compliance Statement</p>
+            <p>Preparamos la documentación y el cumplimiento normativo para interactuar con el ecosistema institucional.</p>
+          </div>
+        </div>
+
+        <div class="pillar-icon-row">
+          <div class="pillar-icon reveal-up" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <div class="pillar-icon reveal-up" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
+          </div>
+          <div class="pillar-icon reveal-up" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5H3z"/><path d="M5.5 10v9M12 10v9M18.5 10v9"/><path d="M3 21h18"/></svg>
+          </div>
+          <div class="pillar-icon reveal-up" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+        </div>
+
+        <div class="bridge-frame">
+          <img class="bridge-img" src="puente.png" alt="Puente de piedra con cuatro arcos, representando la metodología DAC Alliance" loading="lazy">
+          <!-- Anclas invisibles: donde la roca se une al tablero del puente -->
+          <span class="bridge-anchor bridge-anchor--left" aria-hidden="true"></span>
+          <span class="bridge-anchor bridge-anchor--right" aria-hidden="true"></span>
+        </div>
+
+      </div>
+
+      <div class="eco-panel eco-right reveal-up" aria-label="Ecosistema institucional de destino">
+        <h5>Ecosistema Institucional</h5>
+        <ul>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5H3z"/><path d="M5 10v9M19 10v9M12 10v9"/><path d="M3 21h18"/></svg> Banca Privada</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/><circle cx="12" cy="11" r="1.4" fill="currentColor" stroke="none"/></svg> Custodios Institucionales</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12.5h6M9.5 16h5"/></svg> Trusts / LLC</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="6.5" height="10"/><rect x="13" y="5" width="6.5" height="15"/></svg> Holdings</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="2.7"/><circle cx="16" cy="10" r="2.3"/><path d="M3.5 20c0-3 2.3-5.4 5-5.4s5 2.4 5 5.4"/><path d="M13.6 20c.2-2.3 1.9-4.2 3.4-4.2 1.7 0 3.2 1.9 3.5 4.2"/></svg> Family Offices</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 14l2 2 4-4"/></svg> Compliance</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v3"/><path d="M10 3v4h4"/><circle cx="10" cy="15.5" r="3"/><path d="M12.2 17.7L15 20.5"/></svg> Auditoría</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v16M7 21h10"/><path d="M4 8h16"/><path d="M4 8l-2.5 5a2.6 2.6 0 005.2 0L4 8zM20 8l-2.5 5a2.6 2.6 0 005.2 0L20 8z"/></svg> Reguladores</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><path d="M10.5 11.5L19 20M14.5 15.5l2 2M17 13l2 2"/></svg> Herederos</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg> y otros</li>
+        </ul>
+      </div>
+
+      </div>
+    </div>
+
+    <div class="patrimonio-center reveal-up">
+      <div class="patrimonio-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--meth-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2.5l9.5 5.3H2.5z"/>
+          <path d="M4.5 9.8v9.7M9.5 9.8v9.7M14.5 9.8v9.7M19.5 9.8v9.7"/>
+          <path d="M2.5 21.5h19"/>
+          <rect x="10.6" y="13" width="2.8" height="3.6" rx=".4" fill="var(--meth-gold)" fill-opacity="0.3" stroke="none"/>
+        </svg>
+      </div>
+      <h3>Patrimonio Digital Institucional</h3>
+      <p>Estructurado, documentado, protegido y preparado para interactuar con el sistema financiero e institucional.</p>
+    </div>
+
+    <div class="benefits-wrap">
+      <div class="benefits-bar">
+        <div class="benefit-item reveal-up">
+          <div class="benefit-icon-circle">
+            <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>Protección jurídica y patrimonial</span>
+        </div>
+        <div class="benefit-item reveal-up">
+          <div class="benefit-icon-circle">
+            <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <span>Continuidad y herencia</span>
+        </div>
+        <div class="benefit-item reveal-up">
+          <div class="benefit-icon-circle">
+            <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <span>Eficiencia fiscal y operativa</span>
+        </div>
+        <div class="benefit-item reveal-up">
+          <div class="benefit-icon-circle">
+            <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5H3z"/><path d="M5.5 10v9M12 10v9M18.5 10v9"/><path d="M3 21h18"/></svg>
+          </div>
+          <span>Acceso al sistema financiero e institucional</span>
+        </div>
+        <div class="benefit-item reveal-up">
+          <div class="benefit-icon-circle">
+            <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <span>Transparencia y cumplimiento</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE -->
+  <div class="meth-mobile">
+
+    <!-- Ecosistema digital ⇄ puente (recorte) ⇄ ecosistema institucional -->
+    <div class="bridge-mobile-wrap reveal-up">
+      <div class="eco-panel eco-left" aria-label="Ecosistema digital de origen">
+        <h5>Ecosistema Digital</h5>
+        <ul>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18"/><circle cx="17" cy="14" r="1" fill="currentColor" stroke="none"/></svg> Wallets</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h14M13 4l4 4-4 4"/><path d="M21 16H7M11 12l-4 4 4 4"/></svg> Exchanges</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><circle cx="12" cy="6" r="2.2"/><path d="M7.6 16.3L10.6 8M16.4 16.3L13.4 8"/></svg> DeFi</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg> Tokens</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15.5l4.5-4.5 4 4 3.5-3.5L20 15"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/></svg> NFTs</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg> Custodia</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9L12 3z"/></svg> DAOs</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 14.5l9 5 9-5"/></svg> Staking</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg> y otros</li>
+        </ul>
+      </div>
+
+      <div class="bridge-frame-mobile">
+        <img class="bridge-img-mobile" src="puente.png" alt="Puente de piedra con cuatro arcos, representando la metodología DAC Alliance" loading="lazy">
+      </div>
+
+      <div class="eco-panel eco-right" aria-label="Ecosistema institucional de destino">
+        <h5>Ecosistema Institucional</h5>
+        <ul>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5H3z"/><path d="M5 10v9M19 10v9M12 10v9"/><path d="M3 21h18"/></svg> Banca Privada</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/><circle cx="12" cy="11" r="1.4" fill="currentColor" stroke="none"/></svg> Custodios Institucionales</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12.5h6M9.5 16h5"/></svg> Trusts / LLC</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="6.5" height="10"/><rect x="13" y="5" width="6.5" height="15"/></svg> Holdings</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="2.7"/><circle cx="16" cy="10" r="2.3"/><path d="M3.5 20c0-3 2.3-5.4 5-5.4s5 2.4 5 5.4"/><path d="M13.6 20c.2-2.3 1.9-4.2 3.4-4.2 1.7 0 3.2 1.9 3.5 4.2"/></svg> Family Offices</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 14l2 2 4-4"/></svg> Compliance</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v3"/><path d="M10 3v4h4"/><circle cx="10" cy="15.5" r="3"/><path d="M12.2 17.7L15 20.5"/></svg> Auditoría</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v16M7 21h10"/><path d="M4 8h16"/><path d="M4 8l-2.5 5a2.6 2.6 0 005.2 0L4 8zM20 8l-2.5 5a2.6 2.6 0 005.2 0L20 8z"/></svg> Reguladores</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><path d="M10.5 11.5L19 20M14.5 15.5l2 2M17 13l2 2"/></svg> Herederos</li>
+          <li><span class="eco-dot" aria-hidden="true"></span><svg class="eco-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg> y otros</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-card step-card--navy reveal-up">
+      <div class="step-header">
+        <span class="step-num">1</span>
+        <div>
+          <h4>Diagnóstico Estratégico</h4>
+          <p class="step-desc">Comprendemos tu patrimonio digital, tus objetivos y tu situación actual.</p>
+        </div>
+      </div>
+    </div>
+    <div class="step-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+
+    <div class="step-card step-card--teal reveal-up">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <div>
+          <h4>OCAPS<span class="step-acronym">On-Chain Asset Patrimony Statement</span></h4>
+          <p class="step-desc">Documentamos y verificamos tus activos digitales en la blockchain.</p>
+        </div>
+      </div>
+    </div>
+    <div class="step-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+
+    <div class="step-card step-card--navy reveal-up">
+      <div class="step-header">
+        <span class="step-num">3</span>
+        <div>
+          <h4>Estructuración Patrimonial</h4>
+          <p class="step-desc">Diseñamos la arquitectura jurídica, fiscal y fiduciaria más adecuada para tu patrimonio y objetivos.</p>
+        </div>
+      </div>
+    </div>
+    <div class="step-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+
+    <div class="step-card step-card--teal reveal-up">
+      <div class="step-header">
+        <span class="step-num">4</span>
+        <div>
+          <h4>OCACS<span class="step-acronym">On-Chain Asset Compliance Statement</span></h4>
+          <p class="step-desc">Preparamos la documentación y el cumplimiento normativo para interactuar con el ecosistema institucional.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-patrimonio reveal-up">
+      <div class="patrimonio-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--meth-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2.5l9.5 5.3H2.5z"/>
+          <path d="M4.5 9.8v9.7M9.5 9.8v9.7M14.5 9.8v9.7M19.5 9.8v9.7"/>
+          <path d="M2.5 21.5h19"/>
+          <rect x="10.6" y="13" width="2.8" height="3.6" rx=".4" fill="var(--meth-gold)" fill-opacity="0.3" stroke="none"/>
+        </svg>
+      </div>
+      <h3>Patrimonio Digital Institucional</h3>
+      <p>Estructurado, documentado, protegido y preparado para interactuar con el sistema financiero e institucional.</p>
+    </div>
+
+    <div class="benefits-mobile">
+      <div class="benefit-item reveal-up">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Protección jurídica y patrimonial</span>
+      </div>
+      <div class="benefit-item reveal-up">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Continuidad y herencia</span>
+      </div>
+      <div class="benefit-item reveal-up">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        <span>Eficiencia fiscal y operativa</span>
+      </div>
+      <div class="benefit-item reveal-up">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5H3z"/><path d="M5.5 10v9M12 10v9M18.5 10v9"/><path d="M3 21h18"/></svg>
+        <span>Acceso al sistema financiero e institucional</span>
+      </div>
+      <div class="benefit-item reveal-up">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Transparencia y cumplimiento</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- DIAGNÓSTICO ESTRATÉGICO (sección 4) -->
+<section class="diagnostico" id="diagnostico" aria-label="Diagnóstico Estratégico DAC Alliance">
+  <div class="diagnostico-inner">
+
+    <div class="diag-header">
+      <p class="eyebrow reveal-up">
+        <span class="eyebrow-mark" aria-hidden="true"></span>
+        <span>Paso 1 de la metodología</span>
+      </p>
+      <h2 class="diag-title reveal-up">Diagnóstico Estratégico</h2>
+      <p class="diag-lede reveal-up">Todo patrimonio necesita un punto de partida.</p>
+    </div>
+
+    <!-- Visual protagonista con labels flotantes -->
+    <div class="diag-showcase reveal-up">
+      <div class="diag-visual-frame">
+        <img
+          src="Frame_4.png"
+          alt="Diagrama del diagnóstico estratégico: análisis integral de dimensiones críticas del patrimonio digital"
+          loading="lazy"
+          width="800"
+          height="600"
+        />
+        <div class="diag-glow" aria-hidden="true"></div>
+
+        <!-- Labels flotantes alrededor de los círculos (desktop) -->
+        <div class="diag-annotation diag-annotation--tl">
+          <span>Residencia fiscal</span>
+        </div>
+        <div class="diag-annotation diag-annotation--tr">
+          <span>Exchanges utilizados y wallets declaradas</span>
+        </div>
+        <div class="diag-annotation diag-annotation--ml">
+          <span>Nacionalidad y situación personal</span>
+        </div>
+        <div class="diag-annotation diag-annotation--mr">
+          <span>Necesidades de compliance y estructuración internacional</span>
+        </div>
+        <div class="diag-annotation diag-annotation--bl">
+          <span>Objetivos patrimoniales y familiares</span>
+        </div>
+        <div class="diag-annotation diag-annotation--br">
+          <span>Necesidades de protección patrimonial</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Texto descriptivo -->
+    <div class="diag-body reveal-up">
+      <p class="diag-desc">
+        Analizamos tu realidad patrimonial desde todas las dimensiones críticas para comprenderla en profundidad y definir una hoja de ruta coherente y efectiva.
+      </p>
+
+      <!-- Lista mobile/tablet (visible solo en pantallas medianas/pequeñas) -->
+      <ul class="diag-list diag-list--fallback">
+        <li><span class="diag-dot" aria-hidden="true"></span>Residencia fiscal</li>
+        <li><span class="diag-dot" aria-hidden="true"></span>Nacionalidad y situación personal</li>
+        <li><span class="diag-dot" aria-hidden="true"></span>Objetivos patrimoniales y familiares</li>
+        <li><span class="diag-dot" aria-hidden="true"></span>Exchanges utilizados y wallets declaradas</li>
+        <li><span class="diag-dot" aria-hidden="true"></span>Necesidades de compliance y estructuración internacional</li>
+        <li><span class="diag-dot" aria-hidden="true"></span>Necesidades de protección patrimonial</li>
+      </ul>
+
+      <div class="diag-result">
+        <span class="diag-result-label">Resultado</span>
+        <p>Una hoja de ruta patrimonial coherente antes de implementar cualquier estructura.</p>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="diag-benefits">
+      <div class="diag-benefit-item reveal-up">
+        <div class="diag-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </div>
+        <span>Visión integral y personalizada</span>
+      </div>
+      <div class="diag-benefit-item reveal-up">
+        <div class="diag-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <span>Comprensión profunda de tu realidad</span>
+      </div>
+      <div class="diag-benefit-item reveal-up">
+        <div class="diag-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <span>Identificación de riesgos y oportunidades</span>
+      </div>
+      <div class="diag-benefit-item reveal-up">
+        <div class="diag-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
+        </div>
+        <span>Decisiones informadas y estratégicas</span>
+      </div>
+      <div class="diag-benefit-item reveal-up">
+        <div class="diag-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <span>Dirección clara hacia tu objetivo</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- OCAPS (sección 5) -->
+<section class="ocaps" id="ocaps" aria-label="OCAPS — On-Chain Asset Patrimony Statement">
+  <div class="ocaps-inner">
+
+    <div class="ocaps-grid">
+
+      <!-- Columna texto -->
+      <div class="ocaps-text-col">
+        <p class="eyebrow reveal-up">
+          <span class="eyebrow-mark" aria-hidden="true"></span>
+          <span>Paso 2 de la metodología</span>
+        </p>
+
+        <h2 class="ocaps-title reveal-up">2. OCAPS</h2>
+        <p class="ocaps-subtitle reveal-up">On-Chain Asset Patrimony Statement</p>
+
+        <p class="ocaps-desc reveal-up">
+          La primera representación documental verificable del patrimonio digital. OCAPS permite demostrar la existencia, composición y control efectivo del patrimonio digital, generando un informe robusto y verificable.
+        </p>
+
+        <div class="ocaps-question reveal-up">
+          <span class="ocaps-q-mark" aria-hidden="true">?</span>
+          <p>¿Existe el patrimonio digital y puede acreditarse documentalmente su control efectivo?</p>
+        </div>
+
+        <ul class="ocaps-checklist reveal-up">
+          <li>Identificación del titular y de las wallets</li>
+          <li>Inventario completo de los activos digitales</li>
+          <li>Verificación criptográfica del control efectivo</li>
+          <li>Screening inicial AML, PEP y sanciones</li>
+          <li>Relación documental entre banco → exchange → wallet (cuando exista)</li>
+          <li>Evaluación jurídica preliminar de riesgos</li>
+        </ul>
+
+        <div class="ocaps-proceso reveal-up">
+          <span class="ocaps-proceso-label">Proceso DAC</span>
+          <p>Verificamos, consolidamos y documentamos con rigor técnico y jurídico.</p>
+        </div>
+      </div>
+
+      <!-- Columna imagen -->
+      <div class="ocaps-visual-col reveal-up">
+        <div class="ocaps-frame">
+          <img
+            src="frame_5.png"
+            alt="Render 3D del proceso OCAPS: datos de blockchain e identidad del titular ingresan a la máquina DAC Alliance y generan el DAC OCAPS Report"
+            loading="lazy"
+            width="600"
+            height="800"
+          />
+          <div class="ocaps-glow" aria-hidden="true"></div>
+
+          <!-- Labels flotantes -->
+          <div class="ocaps-label ocaps-label--blockchain">
+            <span>Datos de Blockchain</span>
+          </div>
+          <div class="ocaps-label ocaps-label--identity">
+            <span>Identidad del Titular</span>
+          </div>
+          <div class="ocaps-label ocaps-label--proceso">
+            <span>Proceso DAC</span>
+          </div>
+          <div class="ocaps-label ocaps-label--resultado">
+            <span>Resultado</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Resultado destacado -->
+    <div class="ocaps-resultado reveal-up">
+      <div class="ocaps-resultado-inner">
+        <div class="ocaps-resultado-text">
+          <span class="ocaps-resultado-label">Resultado</span>
+          <p class="ocaps-resultado-title">La primera fotografía patrimonial documentada del patrimonio digital.</p>
+          <p class="ocaps-resultado-desc">Base sólida sobre la que se construirá toda la arquitectura jurídica, fiscal y patrimonial posterior.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ESTRUCTURACIÓN PATRIMONIAL (sección 6) -->
+<section class="estructuracion" id="estructuracion" aria-label="Estructuración Patrimonial">
+  <div class="estructuracion-inner">
+
+    <!-- Header -->
+    <div class="estructuracion-header">
+      <p class="eyebrow reveal-up">
+        <span class="eyebrow-mark" aria-hidden="true"></span>
+        <span>Paso 3 de la metodología</span>
+      </p>
+      <h2 class="estructuracion-title reveal-up">3. Estructuración Patrimonial</h2>
+      <p class="estructuracion-lede reveal-up">
+        Convertimos el patrimonio digital acreditado en patrimonio jurídicamente estructurado.
+      </p>
+    </div>
+
+    <!-- Intro + bullets principales -->
+    <div class="estructuracion-intro reveal-up">
+      <p class="estructuracion-intro-text">
+        Diseñamos la arquitectura jurídica, fiscal y fiduciaria más adecuada para proteger, administrar y transmitir el patrimonio digital en cualquier jurisdicción.
+      </p>
+      <ul class="estructuracion-bullets">
+        <li><span class="estructuracion-dot" aria-hidden="true"></span>Protección jurídica y patrimonial</li>
+        <li><span class="estructuracion-dot" aria-hidden="true"></span>Planificación sucesoria y continuidad</li>
+        <li><span class="estructuracion-dot" aria-hidden="true"></span>Optimización fiscal internacional</li>
+        <li><span class="estructuracion-dot" aria-hidden="true"></span>Cumplimiento normativo y gobernanza</li>
+      </ul>
+    </div>
+
+    <!-- DESKTOP: Imagen con textos superpuestos -->
+    <div class="estructuracion-desktop reveal-up">
+      <div class="estructuracion-frame">
+        <img
+          src="frame_6.png"
+          alt="Cinco pilares institucionales representando las estructuras jurídicas de DAC Alliance"
+          loading="lazy"
+          width="1440"
+          height="720"
+        />
+        <div class="estructuracion-glow" aria-hidden="true"></div>
+
+                <!-- Pilar 01 -->
+        <div class="pillar-wrap pillar-wrap--1">
+          <div class="pillar-text">
+            <h4>&nbsp;<br>LLCs</h4>
+            <div class="pillar-line" aria-hidden="true"></div>
+            <p>Vehículos flexibles para operar, proteger y gestionar activos digitales.</p>
+          </div>
+          <span class="pillar-num" aria-hidden="true">01</span>
+        </div>
+
+        <!-- Pilar 02 -->
+        <div class="pillar-wrap pillar-wrap--2">
+          <div class="pillar-text">
+            <h4>Sociedades<br>internacionales</h4>
+            <div class="pillar-line" aria-hidden="true"></div>
+            <p>Estructuras corporativas adaptadas a cada jurisdicción y objetivo fiscal.</p>
+          </div>
+          <span class="pillar-num" aria-hidden="true">02</span>
+        </div>
+
+        <!-- Pilar 03 (destacado) -->
+        <div class="pillar-wrap pillar-wrap--3">
+          <div class="pillar-text">
+            <h4>Estructuración<br>Patrimonial</h4>
+            <div class="pillar-line" aria-hidden="true"></div>
+            <p>Arquitectura jurídica y fiscal a medida para proteger y optimizar tu patrimonio digital.</p>
+          </div>
+          <span class="pillar-num" aria-hidden="true">03</span>
+        </div>
+
+        <!-- Pilar 04 -->
+        <div class="pillar-wrap pillar-wrap--4">
+          <div class="pillar-text">
+            <h4>Fundaciones<br>privadas</h4>
+            <div class="pillar-line" aria-hidden="true"></div>
+            <p>Instrumentos idóneos para control, propósito y planificación intergeneracional.</p>
+          </div>
+          <span class="pillar-num" aria-hidden="true">04</span>
+        </div>
+
+        <!-- Pilar 05 -->
+        <div class="pillar-wrap pillar-wrap--5">
+          <div class="pillar-text">
+            <h4>Holdings<br>patrimoniales</h4>
+            <div class="pillar-line" aria-hidden="true"></div>
+            <p>Estructuras de control y gestión de activos y participaciones a largo plazo.</p>
+          </div>
+          <span class="pillar-num" aria-hidden="true">05</span>
+        </div>
+
+    <!-- MOBILE: Cards apiladas -->
+    <div class="estructuracion-mobile">
+      <div class="pillar-cards-mobile">
+        <article class="pillar-card-mobile reveal-up">
+          <span class="pillar-card-mobile__num" aria-hidden="true">01</span>
+          <h4>LLCs</h4>
+          <div class="pillar-divider" aria-hidden="true"></div>
+          <p>Vehículos flexibles para operar, proteger y gestionar activos digitales.</p>
+        </article>
+
+        <article class="pillar-card-mobile reveal-up">
+          <span class="pillar-card-mobile__num" aria-hidden="true">02</span>
+          <h4>Sociedades internacionales</h4>
+          <div class="pillar-divider" aria-hidden="true"></div>
+          <p>Estructuras corporativas adaptadas a cada jurisdicción y objetivo fiscal.</p>
+        </article>
+
+        <article class="pillar-card-mobile pillar-card-mobile--center reveal-up">
+          <span class="pillar-card-mobile__num" aria-hidden="true">03</span>
+          <h4>Estructuración Patrimonial</h4>
+          <div class="pillar-divider" aria-hidden="true"></div>
+          <p>Arquitectura jurídica y fiscal a medida para proteger y optimizar tu patrimonio digital.</p>
+        </article>
+
+        <article class="pillar-card-mobile reveal-up">
+          <span class="pillar-card-mobile__num" aria-hidden="true">04</span>
+          <h4>Fundaciones privadas</h4>
+          <div class="pillar-divider" aria-hidden="true"></div>
+          <p>Instrumentos idóneos para control, propósito y planificación intergeneracional.</p>
+        </article>
+
+        <article class="pillar-card-mobile reveal-up">
+          <span class="pillar-card-mobile__num" aria-hidden="true">05</span>
+          <h4>Holdings patrimoniales</h4>
+          <div class="pillar-divider" aria-hidden="true"></div>
+          <p>Estructuras de control y gestión de activos y participaciones a largo plazo.</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Cuerpo textual -->
+    <div class="estructuracion-body reveal-up">
+      <p class="estructuracion-desc">
+        Creamos estructuras jurídicas sólidas, reconocidas y adaptadas a los objetivos patrimoniales y familiares del cliente.
+      </p>
+    </div>
+
+    <!-- Benefits finales -->
+    <div class="estructuracion-benefits">
+      <div class="estructuracion-benefit-item reveal-up">
+        <div class="estructuracion-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <span>Estrategias de residencia fiscal internacional</span>
+      </div>
+      <div class="estructuracion-benefit-item reveal-up">
+        <div class="estructuracion-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span>Protección patrimonial en múltiples jurisdicciones</span>
+      </div>
+      <div class="estructuracion-benefit-item reveal-up">
+        <div class="estructuracion-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <span>Planificación sucesoria y continuidad familiar</span>
+      </div>
+      <div class="estructuracion-benefit-item reveal-up">
+        <div class="estructuracion-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <span>Alineación con tus objetivos patrimoniales</span>
+      </div>
+      <div class="estructuracion-benefit-item reveal-up">
+        <div class="estructuracion-benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <span>Cumplimiento normativo y transparencia</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- CIERRE / CONTACTO -->
+<section class="closing" id="contacto" aria-label="Contacto">
+  <svg class="closing-signature" viewBox="16.7 13.6 81.5 88.2" aria-hidden="true">
+    <path fill="#36B5B9" d="M60.7,101.2c-2.8.9-4.5.7-7.1,0l-34.3-11.7c-1-.3-1.9-.5-2.3-1.2-.6-1.1-.2-2,.4-3.1l27.8-52.2,10.1-18.7c.5-1,3.7-.9,4.3,0l5.7,10.4,32.6,61.5c.7,1.4,0,2.6-1.2,3l-35.9,12.1h-.1ZM54.2,70l.2-32.8c0-2.3.3-4.6-.6-6.5l-11.9,44.5,12.3-5.2ZM72.7,75.1l-5.8-21.9c-2.2-7.5-3.5-14.9-6.6-22.7v39.6c0,0,12.3,4.9,12.3,4.9h.1ZM91.9,83.1l-16.8-32.1c-3.3-5.7-5.5-11.4-9.6-17.1l11.5,43.2s14.9,6,14.9,6ZM37.8,77l10.5-41.7-25.1,46.6c-.3.6.3,1.2.8,1,0,0,13.8-5.9,13.8-5.9ZM54.2,94.3v-19.9l-11.8,5,11.8,15h0ZM72.3,79.4l-12-5v20.6l12-15.6ZM49.8,95.7l-11.1-15.1-14.7,6.4s25.8,8.7,25.8,8.7ZM90.4,87.1l-14.6-6.3-10.9,15,25.5-8.7Z"/>
+  </svg>
+  <div class="closing-inner">
+    <p class="closing-eyebrow reveal-up">Hablemos</p>
+    <h2 class="closing-title reveal-up">Diseñemos juntos tu patrimonio digital institucional.</h2>
+    <p class="closing-lede reveal-up">Una reunión estratégica de 30 minutos para entender tu situación patrimonial y ver si nuestra metodología encaja con tus objetivos.</p>
+    <div class="closing-actions reveal-up">
+      <a class="closing-cta" href="mailto:contacto@dacalliance.com?subject=Reuni%C3%B3n%20estrat%C3%A9gica%20DAC%20Alliance" data-magnetic data-magnetic-strength="0.2">
+        <span>Solicitar reunión estratégica</span>
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a class="closing-email" href="mailto:contacto@dacalliance.com">contacto@dacalliance.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-logo">
+      <img src="LOGO_DAC.svg" alt="DAC Alliance" width="120" height="29" loading="lazy">
+    </div>
+    <p class="site-footer-legal">© 2026 DAC Alliance. Metodología desarrollada junto a Insight Trust y Molina Law Boutique.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  function safe(fn, name) {
+    try { fn(); } catch (e) { console.warn('[' + name + ']', e); }
+  }
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initNav() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    function onScroll() {
+      if (window.scrollY > 8) nav.classList.add('is-scrolled');
+      else nav.classList.remove('is-scrolled');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  function initLoadReveal() {
+    var revealEls = document.querySelectorAll('[data-reveal]');
+    if (!reduce) {
+      revealEls.forEach(function (el, i) {
+        el.style.transitionDelay = (i * 100) + 'ms';
+      });
+    }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.body.classList.add('is-loaded');
+      });
+    });
+  }
+
+  function initScrollReveal() {
+    var upEls = document.querySelectorAll('.reveal-up');
+    if (!upEls.length) return;
+    if (reduce || !('IntersectionObserver' in window)) {
+      upEls.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .05, rootMargin: '0px 0px -2% 0px' });
+    upEls.forEach(function (el) { io.observe(el); });
+
+    /* safety net: force-reveal anything still hidden above the fold after 6s */
+    setTimeout(function () {
+      document.querySelectorAll('.reveal-up:not(.is-visible)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+          el.classList.add('is-visible');
+        }
+      });
+    }, 6000);
+  }
+
+  function initScrollProgress() {
+    var bar = document.querySelector('[data-scroll-progress]');
+    if (!bar) return;
+    var raf = null;
+    function update() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? window.scrollY / max : 0;
+      bar.style.transform = 'scaleX(' + pct + ')';
+      raf = null;
+    }
+    window.addEventListener('scroll', function () {
+      if (!raf) raf = requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  }
+
+  function initMagnetic() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('[data-magnetic]').forEach(function (el) {
+      var strength = parseFloat(el.dataset.magneticStrength || '0.25');
+      var inner = document.createElement('span');
+      inner.className = 'magnetic-inner';
+      while (el.firstChild) inner.appendChild(el.firstChild);
+      el.appendChild(inner);
+      el.classList.add('has-magnetic');
+      var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        tx = ((e.clientX - r.left) - r.width / 2) * strength;
+        ty = ((e.clientY - r.top) - r.height / 2) * strength;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      el.addEventListener('mouseleave', function () {
+        tx = 0; ty = 0;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      function loop() {
+        cx += (tx - cx) * 0.2;
+        cy += (ty - cy) * 0.2;
+        inner.style.transform = 'translate3d(' + cx.toFixed(2) + 'px, ' + cy.toFixed(2) + 'px, 0)';
+        raf = (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) ? requestAnimationFrame(loop) : null;
+      }
+    });
+  }
+
+  function initTilt() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var targets = document.querySelectorAll('.stage-circle, .hotspot, .benefit-icon-circle, .pillar-icon');
+    targets.forEach(function (card) {
+      var MAX = 6;
+      var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+      card.classList.add('has-tilt');
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        tx = -py * MAX; ty = px * MAX;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      card.addEventListener('mouseleave', function () {
+        tx = 0; ty = 0;
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      function loop() {
+        cx += (tx - cx) * 0.18;
+        cy += (ty - cy) * 0.18;
+        card.style.setProperty('--rx', cx.toFixed(2) + 'deg');
+        card.style.setProperty('--ry', cy.toFixed(2) + 'deg');
+        raf = (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05) ? requestAnimationFrame(loop) : null;
+      }
+    });
+  }
+
+  function initHeroVideoLoop() {
+    var video = document.getElementById('heroVideo');
+    if (!video) return;
+
+    video.addEventListener('ended', function () {
+      setTimeout(function () {
+        video.currentTime = 0;
+        video.play();
+      }, 4000);
+    });
+
+    function startWithHold() {
+      video.pause();
+      video.currentTime = 0;
+      setTimeout(function () {
+        video.play();
+      }, 2000);
+    }
+
+    if (video.readyState >= 1) {
+      startWithHold();
+    } else {
+      video.addEventListener('loadedmetadata', startWithHold, { once: true });
+    }
+  }
+
+  function initHeroCursorGlow() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var frame = document.getElementById('heroVisualFrame');
+    if (!frame) return;
+    frame.addEventListener('mousemove', function (e) {
+      var r = frame.getBoundingClientRect();
+      var mx = ((e.clientX - r.left) / r.width) * 100;
+      var my = ((e.clientY - r.top) / r.height) * 100;
+      frame.style.setProperty('--mx', mx + '%');
+      frame.style.setProperty('--my', my + '%');
+    });
+  }
+
+  /* ══════════════ HILOS DEL PUENTE (metodología) ══════════════ */
+  function initBridgeWires() {
+    var row = document.querySelector('.bridge-row');
+    var svg = document.querySelector('.bridge-wires');
+    var wireLines = document.querySelector('.wire-lines');
+    var methDesktop = document.querySelector('.meth-desktop');
+    var methSection = document.getElementById('metodologia');
+    var anchorLeft = document.querySelector('.bridge-anchor--left');
+    var anchorRight = document.querySelector('.bridge-anchor--right');
+    var bridgeImg = document.querySelector('.bridge-img');
+    var leftDots = row.querySelectorAll('.eco-left .eco-dot');
+    var rightDots = row.querySelectorAll('.eco-right .eco-dot');
+    var gradient = document.getElementById('bridgeFlowGradient');
+    if (!row || !svg || !wireLines || !methDesktop || !anchorLeft || !anchorRight || !leftDots.length || !rightDots.length) return;
+
+    var revealed = false;
+    var allPaths = [];
+    var flowPaths = [];
+
+    /* colores resueltos una vez: los stops del gradiente no admiten var() como atributo XML */
+    if (gradient) {
+      var cs = getComputedStyle(document.documentElement);
+      var steelColor = cs.getPropertyValue('--steel').trim();
+      var goldColor = cs.getPropertyValue('--gold').trim();
+      var stops = gradient.querySelectorAll('stop');
+      if (stops[0]) stops[0].setAttribute('stop-color', steelColor || '#3F5A76');
+      if (stops[1]) stops[1].setAttribute('stop-color', goldColor || '#B8862E');
+    }
+
+    function isActive() {
+      return getComputedStyle(methDesktop).display !== 'none';
+    }
+
+    function point(el, rowRect) {
+      var r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - rowRect.left, y: r.top + r.height / 2 - rowRect.top };
+    }
+
+    function pathFor(x1, y1, x2, y2) {
+      var midX = (x1 + x2) / 2;
+      return 'M' + x1 + ',' + y1 + ' C' + midX + ',' + y1 + ' ' + midX + ',' + y2 + ' ' + x2 + ',' + y2;
+    }
+
+    function addPath(cls, x1, y1, x2, y2, frag, delay) {
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('class', cls);
+      path.setAttribute('d', pathFor(x1, y1, x2, y2));
+      frag.appendChild(path);
+      allPaths.push({ path: path, delay: delay });
+      return path;
+    }
+
+    /* cometa de luz: mismo trazado que el hilo base, con dash corto + gradiente steel→gold.
+       El dasharray depende de getTotalLength(), que solo es válido una vez el path está
+       insertado en el documento real: se calcula después de wireLines.appendChild(frag). */
+    function addFlowPath(x1, y1, x2, y2, frag, i) {
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('class', 'wire-flow');
+      path.setAttribute('d', pathFor(x1, y1, x2, y2));
+      path.setAttribute('stroke', 'url(#bridgeFlowGradient)');
+      path.setAttribute('filter', 'url(#bridgeFlowGlow)');
+      frag.appendChild(path);
+      flowPaths.push({ path: path, i: i });
+    }
+
+    function render() {
+      if (!isActive()) { wireLines.innerHTML = ''; allPaths = []; flowPaths = []; return; }
+
+      var rowRect = row.getBoundingClientRect();
+      svg.setAttribute('width', rowRect.width);
+      svg.setAttribute('height', rowRect.height);
+      if (gradient) {
+        gradient.setAttribute('x2', rowRect.width);
+      }
+      wireLines.innerHTML = '';
+      allPaths = [];
+      flowPaths = [];
+
+      var frag = document.createDocumentFragment();
+      var aLeft = point(anchorLeft, rowRect);
+      var aRight = point(anchorRight, rowRect);
+
+      leftDots.forEach(function (dot, i) {
+        var p = point(dot, rowRect);
+        addPath('wire-left', p.x, p.y, aLeft.x, aLeft.y, frag, i * 55);
+        if (!reduce) addFlowPath(p.x, p.y, aLeft.x, aLeft.y, frag, i);
+      });
+      rightDots.forEach(function (dot, i) {
+        var p = point(dot, rowRect);
+        addPath('wire-right', aRight.x, aRight.y, p.x, p.y, frag, i * 55);
+        if (!reduce) addFlowPath(aRight.x, aRight.y, p.x, p.y, frag, i);
+      });
+
+      wireLines.appendChild(frag);
+
+      allPaths.forEach(function (item) {
+        if (reduce) return;
+        var len = item.path.getTotalLength();
+        if (revealed) {
+          item.path.style.strokeDasharray = 'none';
+        } else {
+          item.path.style.strokeDasharray = len;
+          item.path.style.strokeDashoffset = len;
+        }
+      });
+
+      flowPaths.forEach(function (item) {
+        var len = item.path.getTotalLength();
+        var comet = Math.min(18, len * 0.22);
+        item.path.style.strokeDasharray = comet + 'px ' + Math.max(len - comet, 1) + 'px';
+        item.path.style.setProperty('--flow-shift', (-len) + 'px');
+        var duration = 2.3 + (item.i % 6) * 0.24;
+        item.path.style.animationDuration = duration.toFixed(2) + 's';
+        item.path.style.animationDelay = (-((item.i * 0.41) % duration)).toFixed(2) + 's';
+      });
+    }
+
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      row.classList.add('bridge-wires-visible');
+      if (reduce) return;
+      allPaths.forEach(function (item) {
+        item.path.style.transition = 'stroke-dashoffset 1.3s var(--ease) ' + item.delay + 'ms';
+        item.path.style.strokeDashoffset = '0';
+      });
+    }
+
+    render();
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      reveal();
+      if (!reduce) svg.classList.add('flow-active');
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { reveal(); io.disconnect(); }
+        });
+      }, { threshold: .1, rootMargin: '0px 0px -2% 0px' });
+      io.observe(row);
+
+      /* el flujo de luz corre solo mientras la sección está en pantalla (ahorra ciclos) */
+      if (!reduce && methSection) {
+        var flowIO = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            svg.classList.toggle('flow-active', entry.isIntersecting);
+          });
+        }, { threshold: 0 });
+        flowIO.observe(methSection);
+      }
+    }
+
+    if (bridgeImg && !bridgeImg.complete) {
+      bridgeImg.addEventListener('load', render, { once: true });
+    }
+    window.addEventListener('load', render);
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(render, 150);
+    });
+  }
+
+  function initSmoothAnchors() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      var el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      window.scrollTo({
+        top: el.getBoundingClientRect().top + window.scrollY - 80,
+        behavior: reduce ? 'auto' : 'smooth'
+      });
+    });
+  }
+
+  safe(initNav, 'initNav');
+  safe(initLoadReveal, 'initLoadReveal');
+  safe(initScrollReveal, 'initScrollReveal');
+  safe(initScrollProgress, 'initScrollProgress');
+  safe(initMagnetic, 'initMagnetic');
+  safe(initTilt, 'initTilt');
+  safe(initHeroCursorGlow, 'initHeroCursorGlow');
+  safe(initHeroVideoLoop, 'initHeroVideoLoop');
+  safe(initBridgeWires, 'initBridgeWires');
+  safe(initSmoothAnchors, 'initSmoothAnchors');
+})();
+</script>
+
+</body>
+</html>
