@@ -2270,11 +2270,29 @@ body.is-loaded [data-reveal] {
 @media (max-width: 680px) {
   .ocaps { padding: 3.75rem 1.25rem; }
   .ocaps-title { font-size: clamp(2.2rem, 8vw, 3rem); }
-  .ocaps-frame { max-width: 100%; }
+  .ocaps-visual-col { order: 0; }
+  .ocaps-frame { max-width: 76%; margin: 0 auto; }
   .ocaps-question { padding: 1.2rem 1.2rem 1.2rem 3.2rem; }
   .ocaps-q-mark { top: 1.15rem; left: 1rem; width: 24px; height: 24px; font-size: .85rem; }
   .ocaps-checklist li { font-size: .88rem; }
   .ocaps-resultado { padding-top: 2rem; }
+
+  /* Reactivamos las etiquetas flotantes, mismas posiciones relativas que desktop, offsets reducidos al ancho disponible */
+  .ocaps-label {
+    display: block;
+    font-size: .6rem;
+    line-height: 1.25;
+    max-width: 96px;
+    padding: .4rem .55rem;
+  }
+  .ocaps-label--blockchain { top: 0%; left: -6px; }
+  .ocaps-label--identity { top: 0%; right: -6px; }
+  .ocaps-label--proceso { top: 42%; right: -6px; }
+  .ocaps-label--resultado { bottom: 16%; right: 2px; }
+  .ocaps-label--blockchain::after { right: -5px; }
+  .ocaps-label--identity::after,
+  .ocaps-label--proceso::after,
+  .ocaps-label--resultado::after { left: -5px; }
 }
 
 /* ══════════════ ESTRUCTURACIÓN PATRIMONIAL ══════════════ */
