@@ -7,7 +7,7 @@
 <meta name="description" content="Metodología para transformar activos digitales dispersos en patrimonio digital: bancarizable, heredable y custodiado institucionalmente.">
 <link rel="icon" type="image/svg+xml" href="LOGO_DAC.svg">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://formspree.io; object-src 'none'; base-uri 'none'; form-action 'self' https://formspree.io; upgrade-insecure-requests;">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -51,7 +51,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero hero-center-layout" aria-label="DAC Alliance — Hero">
+<section class="hero hero-center-layout" id="inicio" aria-label="DAC Alliance — Hero">
   <div class="hero-center-inner">
 
 
@@ -865,11 +865,98 @@
           width="955"
           height="650"
         />
+        <a class="logo-hotspot synthesis-hotspot--insight" href="https://insight-trust.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Insight Trust"></a>
+        <a class="logo-hotspot synthesis-hotspot--molina" href="https://www.molinalawboutique.es/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Molina Law Boutique"></a>
       </div>
     </div>
 
   </div>
 </section>
+
+<!-- SOBRE NOSOTROS -->
+<section class="about" id="sobre-nosotros" aria-label="Sobre nosotros">
+  <div class="about-head">
+    <p class="eyebrow reveal-up">
+      <span class="eyebrow-mark" aria-hidden="true"></span>
+      <span>Sobre nosotros</span>
+    </p>
+    <h2 class="about-title h2-medio reveal-up">Una metodología respaldada por especialistas</h2>
+    <p class="about-lede reveal-up">DAC Alliance coordina una metodología única que integra especialistas en estructuración patrimonial internacional y compliance blockchain. El cliente accede a un único proceso, respaldado por expertos en cada disciplina.</p>
+  </div>
+
+  <div class="about-body">
+    <div class="about-image-wrap reveal-up">
+      <img
+        src="9.jpg"
+        alt="Alianza DAC Alliance: Insight Trust, especialista en arquitectura patrimonial internacional, y Molina Law Boutique, especialista en compliance y certificación blockchain"
+        class="about-image"
+        width="1429" height="516"
+        loading="lazy">
+      <a class="logo-hotspot logo-hotspot--insight" href="https://insight-trust.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Insight Trust"></a>
+      <a class="logo-hotspot logo-hotspot--molina" href="https://www.molinalawboutique.es/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Molina Law Boutique"></a>
+    </div>
+
+    <div class="highlight-box reveal-up">
+      <div class="icon-circle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3.2l6.8 2.9v5.2c0 4.4-2.9 8.1-6.8 9.1-3.9-1-6.8-4.7-6.8-9.1V6.1L12 3.2z"/>
+          <path d="M8.7 12.3l2.2 2.2 4.4-4.7"/>
+        </svg>
+      </div>
+      <span class="divider" aria-hidden="true"></span>
+      <p>DAC Alliance integra la experiencia de firmas altamente especializadas dentro de una metodología única, ofreciendo al cliente <strong>un único proceso, una única coordinación y una visión patrimonial completa.</strong></p>
+    </div>
+  </div>
+</section>
+
+<div class="icon-bar">
+  <div class="icon-bar-inner">
+    <div class="icon-bar-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18"/>
+        <path d="M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9s1.4-6.4 3.9-9z"/>
+      </svg>
+      <span>Experiencia<br>Internacional</span>
+    </div>
+    <div class="icon-bar-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3.2l6.8 2.9v5.2c0 4.4-2.9 8.1-6.8 9.1-3.9-1-6.8-4.7-6.8-9.1V6.1L12 3.2z"/>
+        <path d="M8.7 12.3l2.2 2.2 4.4-4.7"/>
+      </svg>
+      <span>Especialización<br>Complementaria</span>
+    </div>
+    <div class="icon-bar-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2.2 12.6l3.6-3c.7-.6 1.7-.6 2.3.1l1.4 1.4"/>
+        <path d="M21.8 12.6l-3.6-3c-.7-.6-1.7-.6-2.3.1l-4.6 4.7c-.5.5-.5 1.3 0 1.8.5.5 1.3.5 1.8 0"/>
+        <path d="M7.5 12l3.3 3.3c.5.5 1.3.5 1.8 0"/>
+        <path d="M5.3 10.7l4.9 4.9c.5.5 1.3.5 1.8 0"/>
+        <path d="M2.2 12.6v3.3M21.8 12.6v3.3"/>
+      </svg>
+      <span>Metodología<br>Integrada</span>
+    </div>
+    <div class="icon-bar-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4.5" y="11" width="15" height="9.3" rx="2"/>
+        <path d="M8 11V7.6a4 4 0 0 1 8 0V11"/>
+        <path d="M12 15v1.8"/>
+      </svg>
+      <span>Confidencialidad<br>Absoluta</span>
+    </div>
+    <div class="icon-bar-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="10.5" cy="13.5" r="7.7"/>
+        <circle cx="10.5" cy="13.5" r="4.1"/>
+        <circle cx="10.5" cy="13.5" r=".5" fill="currentColor" stroke="none"/>
+        <path d="M21.5 2.5l-7.6 7.6"/>
+        <path d="M21.5 2.5h-4.6M21.5 2.5v4.6"/>
+      </svg>
+      <span>Enfoque en<br>el Cliente</span>
+    </div>
+  </div>
+</div>
+
 <!-- CIERRE / CONTACTO -->
 <section class="closing" id="contacto" aria-label="Contacto">
   <svg class="closing-signature" viewBox="16.7 13.6 81.5 88.2" aria-hidden="true">
@@ -880,27 +967,105 @@
       <span class="eyebrow-mark" aria-hidden="true"></span>
       <span>Hablemos</span>
     </p>
-    <h2 class="closing-title h2-largo reveal-up">Diseñemos juntos tu patrimonio digital institucional.</h2>
-    <p class="closing-lede reveal-up">Una reunión estratégica de 30 minutos para entender tu situación patrimonial y ver si nuestra metodología encaja con tus objetivos.</p>
-    <div class="closing-actions reveal-up">
-      <a class="closing-cta" href="mailto:contacto@dacalliance.com?subject=Reuni%C3%B3n%20estrat%C3%A9gica%20DAC%20Alliance" data-magnetic data-magnetic-strength="0.2">
-        <span>Solicitar reunión estratégica</span>
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-          <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a class="closing-email" href="mailto:contacto@dacalliance.com">contacto@dacalliance.com</a>
+    <h2 class="closing-title h2-largo reveal-up">Iniciá la conversación con nuestro equipo</h2>
+    <p class="closing-lede reveal-up">Completá el formulario y uno de nuestros especialistas se pondrá en contacto para coordinar una consulta inicial.</p>
+
+    <div class="contact-form-wrap reveal-up">
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+        <input type="text" name="_gotcha" class="contact-hp" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="_replyto" value="">
+
+        <div class="form-group">
+          <label for="contact-name">Nombre completo</label>
+          <input type="text" id="contact-name" name="name" autocomplete="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email" name="email" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-message">Mensaje</label>
+          <textarea id="contact-message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="contact-submit">
+          <span>Enviar mensaje</span>
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <p class="contact-privacy">Al enviar este formulario aceptás que usemos tus datos únicamente para responder tu consulta.</p>
+
+        <p class="contact-feedback contact-feedback--success" role="status" aria-live="polite" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.3"/><path d="M8 12.3l2.6 2.6L16.4 9"/></svg>
+          <span>Gracias por tu mensaje. Nos pondremos en contacto a la brevedad.</span>
+        </p>
+        <p class="contact-feedback contact-feedback--error" role="alert" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.3"/><path d="M12 7.6v5.4"/><circle cx="12" cy="16.4" r="1" fill="currentColor" stroke="none"/></svg>
+          <span>Hubo un problema al enviar tu mensaje. Intentá nuevamente o escribinos directamente a <a href="mailto:contacto@dacalliance.com">contacto@dacalliance.com</a>.</span>
+        </p>
+      </form>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="site-footer-inner">
-    <div class="site-footer-logo">
-      <img src="LOGO_DAC.svg" alt="DAC Alliance" width="120" height="29" loading="lazy">
+  <div class="site-footer-main">
+
+    <div class="site-footer-brand">
+      <img src="LOGO_DAC.svg" alt="DAC Alliance" class="site-footer-logo" width="164" height="40" loading="lazy">
+      <p class="site-footer-tagline">Metodología integrada en estructuración patrimonial internacional y compliance blockchain.</p>
     </div>
-    <p class="site-footer-legal">© 2026 DAC Alliance. Metodología desarrollada junto a Insight Trust y Molina Law Boutique.</p>
+
+    <nav class="site-footer-nav" aria-label="Navegación del footer">
+      <a href="#inicio">Inicio</a>
+      <a href="#origen">Por qué</a>
+      <a href="#metodologia">Metodología</a>
+      <a href="#diagnostico">Diagnóstico</a>
+      <a href="#ocaps">OCAPS</a>
+      <a href="#estructuracion">Estructuración</a>
+      <a href="#ocacs">OCACS</a>
+      <a href="#sobre-nosotros">Sobre nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="site-footer-partners">
+      <span class="site-footer-partners-label">Aliados</span>
+      <div class="site-footer-partners-logos">
+        <a href="https://insight-trust.com/" target="_blank" rel="noopener noreferrer" aria-label="Insight Trust" class="site-footer-partner-chip">
+          <img src="logo_insight.jpg" alt="Insight Trust" class="site-footer-partner-logo site-footer-partner-logo--insight" loading="lazy">
+        </a>
+        <a href="https://www.molinalawboutique.es/" target="_blank" rel="noopener noreferrer" aria-label="Molina Law Boutique" class="site-footer-partner-chip">
+          <img src="logo_molina.svg" alt="Molina Law Boutique" class="site-footer-partner-logo site-footer-partner-logo--molina" loading="lazy">
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer-contact">
+      <a href="mailto:contacto@dacalliance.com">contacto@dacalliance.com</a>
+      <a href="#" class="site-footer-social" aria-label="LinkedIn de DAC Alliance">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="3"/>
+          <path d="M8 10.6v6.4"/>
+          <circle cx="8" cy="7.1" r=".35" fill="currentColor" stroke="none"/>
+          <path d="M12 17v-6.4"/>
+          <path d="M12 13.2c0-1.5 1.2-2.6 2.5-2.6s2.5.9 2.5 2.6v3.8"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="site-footer-bottom">
+    <p class="site-footer-copyright">© 2026 DAC Alliance. Todos los derechos reservados.</p>
+    <div class="site-footer-legal">
+      <a href="#">Política de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+    </div>
   </div>
 </footer>
 

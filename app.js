@@ -485,6 +485,56 @@
     });
   }
 
+  function initContactForm() {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+
+    var successMsg = form.querySelector('.contact-feedback--success');
+    var errorMsg = form.querySelector('.contact-feedback--error');
+    var submitBtn = form.querySelector('.contact-submit');
+    var submitLabel = submitBtn ? submitBtn.querySelector('span') : null;
+    var replyTo = form.querySelector('input[name="_replyto"]');
+    var emailField = form.querySelector('#contact-email');
+    var isSending = false;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (isSending) return;
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      if (successMsg) successMsg.hidden = true;
+      if (errorMsg) errorMsg.hidden = true;
+      if (replyTo) replyTo.value = emailField ? emailField.value : '';
+
+      isSending = true;
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitLabel) submitLabel.textContent = 'Enviando…';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function (response) {
+        if (response.ok) {
+          if (successMsg) successMsg.hidden = false;
+          form.reset();
+        } else {
+          if (errorMsg) errorMsg.hidden = false;
+        }
+      }).catch(function () {
+        if (errorMsg) errorMsg.hidden = false;
+      }).then(function () {
+        isSending = false;
+        if (submitBtn) submitBtn.disabled = false;
+        if (submitLabel) submitLabel.textContent = 'Enviar mensaje';
+      });
+    });
+  }
+
   function initSmoothAnchors() {
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a[href^="#"]');
@@ -513,4 +563,5 @@
   safe(initBridgeWires, 'initBridgeWires');
   safe(initBridgeWiresMobile, 'initBridgeWiresMobile');
   safe(initSmoothAnchors, 'initSmoothAnchors');
+  safe(initContactForm, 'initContactForm');
 })();
