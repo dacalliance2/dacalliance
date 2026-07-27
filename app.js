@@ -362,6 +362,15 @@
     }
     window.addEventListener('load', render);
 
+    /* los paneles .eco-left/.eco-right usan reveal-up: se animan (translateY) al entrar
+       en viewport. Si los hilos se calculan antes de que esa transición termine, quedan
+       anclados a la posición pre-animación de los bullets. Recalcular al finalizar. */
+    row.querySelectorAll('.eco-left, .eco-right').forEach(function (panel) {
+      panel.addEventListener('transitionend', function (e) {
+        if (e.propertyName === 'transform') render();
+      });
+    });
+
     var resizeTimer = null;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
