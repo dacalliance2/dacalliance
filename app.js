@@ -205,20 +205,26 @@
     });
   }
 
-  /* ══════════════ HILOS DEL PUENTE (metodología) ══════════════ */
-  function initBridgeWires() {
-    var row = document.querySelector('.bridge-row');
-    var svg = document.querySelector('.bridge-wires');
-    var wireLines = document.querySelector('.wire-lines');
-    var methDesktop = document.querySelector('.meth-desktop');
-    var methSection = document.getElementById('metodologia');
-    var anchorLeft = document.querySelector('.bridge-anchor--left');
-    var anchorRight = document.querySelector('.bridge-anchor--right');
-    var bridgeImg = document.querySelector('.bridge-img');
-    var leftDots = row.querySelectorAll('.eco-left .eco-dot');
-    var rightDots = row.querySelectorAll('.eco-right .eco-dot');
-    var gradient = document.getElementById('bridgeFlowGradient');
-    if (!row || !svg || !wireLines || !methDesktop || !anchorLeft || !anchorRight || !leftDots.length || !rightDots.length) return;
+  /* ══════════════ HILOS DEL PUENTE (metodología) ══════════════
+     Lógica compartida entre la versión desktop (.bridge-row) y mobile
+     (.bridge-mobile-wrap): cada una tiene su propio SVG/anclas/gradiente,
+     pero el mismo comportamiento de trazado, reveal y cometa de luz. */
+  function setupBridgeWires(opts) {
+    var row = opts.row;
+    var svg = opts.svg;
+    var wireLines = opts.wireLines;
+    var anchorLeft = opts.anchorLeft;
+    var anchorRight = opts.anchorRight;
+    var media = opts.media;
+    var leftDots = opts.leftDots;
+    var rightDots = opts.rightDots;
+    var gradient = opts.gradient;
+    var isActive = opts.isActive;
+    var flowSection = opts.flowSection;
+    /* motion:false = hilos estáticos, sin cometa de luz ni animación de trazado
+       (igual desde el primer render), pero siguen confluyendo en las anclas del puente */
+    var motion = opts.motion !== false;
+    if (!row || !svg || !wireLines || !anchorLeft || !anchorRight || !leftDots.length || !rightDots.length) return;
 
     var revealed = false;
     var allPaths = [];
@@ -232,10 +238,6 @@
       var stops = gradient.querySelectorAll('stop');
       if (stops[0]) stops[0].setAttribute('stop-color', steelColor || '#3F5A76');
       if (stops[1]) stops[1].setAttribute('stop-color', goldColor || '#B8862E');
-    }
-
-    function isActive() {
-      return getComputedStyle(methDesktop).display !== 'none';
     }
 
     function point(el, rowRect) {
@@ -264,8 +266,8 @@
       var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('class', 'wire-flow');
       path.setAttribute('d', pathFor(x1, y1, x2, y2));
-      path.setAttribute('stroke', 'url(#bridgeFlowGradient)');
-      path.setAttribute('filter', 'url(#bridgeFlowGlow)');
+      if (gradient) path.setAttribute('stroke', 'url(#' + gradient.id + ')');
+      if (opts.glowId) path.setAttribute('filter', 'url(#' + opts.glowId + ')');
       frag.appendChild(path);
       flowPaths.push({ path: path, i: i });
     }
@@ -290,18 +292,18 @@
       leftDots.forEach(function (dot, i) {
         var p = point(dot, rowRect);
         addPath('wire-left', p.x, p.y, aLeft.x, aLeft.y, frag, i * 55);
-        if (!reduce) addFlowPath(p.x, p.y, aLeft.x, aLeft.y, frag, i);
+        if (!reduce && motion) addFlowPath(p.x, p.y, aLeft.x, aLeft.y, frag, i);
       });
       rightDots.forEach(function (dot, i) {
         var p = point(dot, rowRect);
         addPath('wire-right', aRight.x, aRight.y, p.x, p.y, frag, i * 55);
-        if (!reduce) addFlowPath(aRight.x, aRight.y, p.x, p.y, frag, i);
+        if (!reduce && motion) addFlowPath(aRight.x, aRight.y, p.x, p.y, frag, i);
       });
 
       wireLines.appendChild(frag);
 
       allPaths.forEach(function (item) {
-        if (reduce) return;
+        if (reduce || !motion) return;
         var len = item.path.getTotalLength();
         if (revealed) {
           item.path.style.strokeDasharray = 'none';
@@ -326,7 +328,7 @@
       if (revealed) return;
       revealed = true;
       row.classList.add('bridge-wires-visible');
-      if (reduce) return;
+      if (reduce || !motion) return;
       allPaths.forEach(function (item) {
         item.path.style.transition = 'stroke-dashoffset 1.3s var(--ease) ' + item.delay + 'ms';
         item.path.style.strokeDashoffset = '0';
@@ -335,9 +337,9 @@
 
     render();
 
-    if (reduce || !('IntersectionObserver' in window)) {
+    if (reduce || !motion || !('IntersectionObserver' in window)) {
       reveal();
-      if (!reduce) svg.classList.add('flow-active');
+      if (!reduce && motion) svg.classList.add('flow-active');
     } else {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -347,24 +349,129 @@
       io.observe(row);
 
       /* el flujo de luz corre solo mientras la sección está en pantalla (ahorra ciclos) */
-      if (!reduce && methSection) {
+      if (!reduce && flowSection) {
         var flowIO = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             svg.classList.toggle('flow-active', entry.isIntersecting);
           });
         }, { threshold: 0 });
-        flowIO.observe(methSection);
+        flowIO.observe(flowSection);
       }
     }
 
-    if (bridgeImg && !bridgeImg.complete) {
-      bridgeImg.addEventListener('load', render, { once: true });
+    if (media && !media.complete) {
+      media.addEventListener('load', render, { once: true });
     }
     window.addEventListener('load', render);
 
     /* los paneles .eco-left/.eco-right usan reveal-up: se animan (translateY) al entrar
        en viewport. Si los hilos se calculan antes de que esa transición termine, quedan
        anclados a la posición pre-animación de los bullets. Recalcular al finalizar. */
+    row.querySelectorAll('.eco-left, .eco-right').forEach(function (panel) {
+      panel.addEventListener('transitionend', function (e) {
+        if (e.propertyName === 'transform') render();
+      });
+    });
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(render, 150);
+    });
+  }
+
+  function initBridgeWires() {
+    var row = document.querySelector('.bridge-row');
+    var methDesktop = document.querySelector('.meth-desktop');
+    var methSection = document.getElementById('metodologia');
+    if (!row || !methDesktop) return;
+    setupBridgeWires({
+      row: row,
+      svg: document.querySelector('.bridge-wires'),
+      wireLines: document.querySelector('.wire-lines'),
+      anchorLeft: document.querySelector('.bridge-anchor--left'),
+      anchorRight: document.querySelector('.bridge-anchor--right'),
+      leftDots: row.querySelectorAll('.eco-left .eco-dot'),
+      rightDots: row.querySelectorAll('.eco-right .eco-dot'),
+      gradient: document.getElementById('bridgeFlowGradient'),
+      glowId: 'bridgeFlowGlow',
+      media: document.querySelector('.bridge-img'),
+      isActive: function () { return getComputedStyle(methDesktop).display !== 'none'; },
+      flowSection: methSection
+    });
+  }
+
+  /* ── Hilos del puente en mobile: topología distinta a desktop ──
+     En vez de un hilo curvo por bullet (fan-out), una única línea vertical
+     recorre todos los bullets de la columna y, al llegar al nivel del
+     anillo, dobla en horizontal para entrar en él. Sin animación (ver
+     initBridgeWiresMobile: motion:false en desktop no aplica acá, esta
+     versión es siempre estática). */
+  function initBridgeWiresMobile() {
+    var row = document.querySelector('.bridge-mobile-wrap');
+    var methMobile = document.querySelector('.meth-mobile');
+    var svg = row && row.querySelector('.bridge-wires-mobile');
+    var wireLines = row && row.querySelector('.wire-lines-mobile');
+    var anchorLeft = row && row.querySelector('.bridge-anchor-mobile--left');
+    var anchorRight = row && row.querySelector('.bridge-anchor-mobile--right');
+    var leftDots = row ? row.querySelectorAll('.eco-left .eco-dot') : [];
+    var rightDots = row ? row.querySelectorAll('.eco-right .eco-dot') : [];
+    var media = row && row.querySelector('.bridge-img-mobile');
+    if (!row || !svg || !wireLines || !anchorLeft || !anchorRight || !leftDots.length || !rightDots.length) return;
+
+    function isActive() {
+      return getComputedStyle(methMobile).display !== 'none';
+    }
+
+    function point(el, rowRect) {
+      var r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - rowRect.left, y: r.top + r.height / 2 - rowRect.top };
+    }
+
+    /* tronco vertical (M...L...) que enhebra todos los dots + rama horizontal
+       (M...L...) que dobla desde el tronco, al nivel Y del ancla, hacia el anillo */
+    function sidePath(dots, anchor, rowRect) {
+      var pts = [];
+      dots.forEach(function (dot) { pts.push(point(dot, rowRect)); });
+      var a = point(anchor, rowRect);
+      var trunkX = pts[0].x;
+      var ys = pts.map(function (p) { return p.y; }).concat([a.y]);
+      var top = Math.min.apply(Math, ys);
+      var bottom = Math.max.apply(Math, ys);
+      return 'M' + trunkX + ',' + top + ' L' + trunkX + ',' + bottom +
+             ' M' + trunkX + ',' + a.y + ' L' + a.x + ',' + a.y;
+    }
+
+    function addPath(cls, d, frag) {
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('class', cls);
+      path.setAttribute('d', d);
+      frag.appendChild(path);
+    }
+
+    function render() {
+      if (!isActive()) { wireLines.textContent = ''; return; }
+
+      var rowRect = row.getBoundingClientRect();
+      svg.setAttribute('width', rowRect.width);
+      svg.setAttribute('height', rowRect.height);
+      wireLines.textContent = '';
+
+      var frag = document.createDocumentFragment();
+      addPath('wire-left', sidePath(leftDots, anchorLeft, rowRect), frag);
+      addPath('wire-right', sidePath(rightDots, anchorRight, rowRect), frag);
+      wireLines.appendChild(frag);
+
+      row.classList.add('bridge-wires-visible');
+    }
+
+    render();
+
+    if (media && !media.complete) {
+      media.addEventListener('load', render, { once: true });
+    }
+    window.addEventListener('load', render);
+
     row.querySelectorAll('.eco-left, .eco-right').forEach(function (panel) {
       panel.addEventListener('transitionend', function (e) {
         if (e.propertyName === 'transform') render();
@@ -404,5 +511,6 @@
   safe(initHeroCursorGlow, 'initHeroCursorGlow');
   safe(initHeroVideoLoop, 'initHeroVideoLoop');
   safe(initBridgeWires, 'initBridgeWires');
+  safe(initBridgeWiresMobile, 'initBridgeWiresMobile');
   safe(initSmoothAnchors, 'initSmoothAnchors');
 })();

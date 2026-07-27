@@ -373,6 +373,13 @@
 
     <!-- Ecosistema digital ⇄ puente (recorte) ⇄ ecosistema institucional -->
     <div class="bridge-mobile-wrap reveal-up">
+
+      <!-- Hilos SVG: dibujados por JS (initBridgeWiresMobile) — línea vertical que
+           recorre los bullets y dobla hacia el anillo, sin animación -->
+      <svg class="bridge-wires-mobile" aria-hidden="true">
+        <g class="wire-lines-mobile"></g>
+      </svg>
+
       <div class="eco-panel eco-left" aria-label="Ecosistema digital de origen">
         <h5>Ecosistema Digital</h5>
         <ul>
@@ -389,7 +396,11 @@
       </div>
 
       <div class="bridge-frame-mobile">
-        <img class="bridge-img-mobile" src="puente.png" alt="Puente de piedra con cuatro arcos, representando la metodología DAC Alliance" loading="lazy">
+        <div class="bridge-frame-mobile-inner">
+          <img class="bridge-img-mobile" src="puentemobile.png" alt="Arco de piedra del puente, representando la metodología DAC Alliance" loading="lazy">
+          <span class="bridge-anchor-mobile bridge-anchor-mobile--left" aria-hidden="true"></span>
+          <span class="bridge-anchor-mobile bridge-anchor-mobile--right" aria-hidden="true"></span>
+        </div>
       </div>
 
       <div class="eco-panel eco-right" aria-label="Ecosistema institucional de destino">

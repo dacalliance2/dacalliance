@@ -1325,50 +1325,113 @@ body.is-loaded [data-reveal] {
 .meth-mobile { display: none; }
 
 /* ── Bloque digital ⇄ puente recortado ⇄ institucional (mobile) ──
-   Sin líneas: la asociación se comunica por continuidad de layout (todo dentro
-   de un mismo fondo, sin separación) y por color (barra steel/gold pegada al
-   borde donde cada panel conecta con la imagen). ── */
+   Misma composición de 3 columnas que la versión desktop: ecosistema digital
+   a la izquierda, arco del puente al centro, ecosistema institucional a la
+   derecha. La asociación entre columnas y puente la comunican los hilos SVG
+   (initBridgeWiresMobile), igual que en desktop — sin barras divisorias. ── */
 .bridge-mobile-wrap {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: stretch;
+  gap: .5rem;
   background: var(--warm);
   border-radius: 14px;
-  padding: 1.75rem 1.25rem;
+  padding: 1.5rem .6rem;
   margin-bottom: 2.5rem;
 }
 
-/* .eco-panel se reutiliza tal cual (icono + color steel/gold), solo cambia el layout de columna angosta a ancho completo */
-.meth-mobile .eco-panel { flex: none; width: 100%; }
-.meth-mobile .eco-panel h5 { text-align: center; margin-bottom: .9rem; }
-.meth-mobile .eco-panel ul {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  justify-content: center;
-  gap: .5rem 1.75rem;
+/* .eco-panel se reutiliza tal cual (icono + color steel/gold), solo se angosta la columna */
+.meth-mobile .eco-panel {
+  flex: 0 0 88px;
+  width: 88px;
+  box-sizing: border-box;
 }
-.meth-mobile .eco-panel li { flex-direction: row; text-align: left; font-size: .76rem; margin-bottom: 0; }
-.meth-mobile .eco-panel .eco-icon { width: 15px; height: 15px; }
-
-/* barra de color pegada al borde que conecta con el puente */
-.meth-mobile .eco-panel.eco-left { border-bottom: 3px solid var(--steel); padding-bottom: 1.4rem; }
-.meth-mobile .eco-panel.eco-right { border-top: 3px solid var(--meth-gold); padding-top: 1.4rem; }
+.meth-mobile .eco-panel h5 {
+  font-size: .5rem;
+  letter-spacing: .06em;
+  margin-bottom: .75rem;
+}
+.meth-mobile .eco-panel li {
+  gap: .35rem;
+  font-size: .58rem;
+  margin-bottom: .55rem;
+  line-height: 1.2;
+}
+.meth-mobile .eco-panel .eco-icon { width: 12px; height: 12px; }
+.meth-mobile .eco-panel .eco-dot { width: 4px; height: 4px; }
 
 .bridge-frame-mobile {
   position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+/* La columna se estira (align-items:stretch del wrap) para igualar la altura
+   de las listas eco-panel, pero la imagen debe conservar su alto intrínseco:
+   este wrapper no se estira y es la referencia real para posicionar las anclas,
+   en vez del frame (que quedaría más alto que la imagen y las desplazaría). */
+.bridge-frame-mobile-inner {
+  position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
 }
 .bridge-img-mobile {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+  height: auto;
   display: block;
 }
+
+/* Anclas donde la roca se une al tablero: al inicio de la baranda, arriba de la imagen */
+.bridge-anchor-mobile {
+  position: absolute;
+  top: 3%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.bridge-anchor-mobile--left { left: 1%; }
+.bridge-anchor-mobile--right { left: 99%; }
+.bridge-anchor-mobile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1.3px solid var(--steel);
+  background: var(--paper);
+  opacity: 0;
+  transition: opacity .8s var(--ease) .3s;
+}
+.bridge-anchor-mobile--right::before { border-color: var(--meth-gold); }
+.bridge-mobile-wrap.bridge-wires-visible .bridge-anchor-mobile::before { opacity: 1; }
+
+/* ── Hilos que convergen en el puente (mobile) — mismo comportamiento que .bridge-wires ── */
+.bridge-wires-mobile {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.bridge-wires-mobile path {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+.bridge-wires-mobile .wire-left { stroke: var(--steel); opacity: .5; }
+.bridge-wires-mobile .wire-right { stroke: var(--meth-gold); opacity: .55; }
+.bridge-wires-mobile .wire-flow {
+  stroke-width: 1.6;
+  opacity: .95;
+  animation-name: bridge-flow-dash;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+.bridge-wires-mobile.flow-active .wire-flow { animation-play-state: running; }
 
 .step-card {
   background: var(--paper);
