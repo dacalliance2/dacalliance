@@ -1,0 +1,30 @@
+# Documentos de trabajo interno
+*.docx
+*.doc
+AUDITORIA_COPY.md
+PROPUESTA_TITULOS.md
+
+# Capturas, mockups y versiones intermedias no publicadas
+captura*.png
+mockup*.png
+mejorar.png
+modelo.png
+DAC.png
+Frame2.png
+HERO_ok.png
+frame_6.png
+logos.png
+1.jpg
+index - copia*.html
+index-copia*.html
+*.bak
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Fuentes de trabajo (originales sin convertir; solo se publican los .woff2 en /fonts)
+fonts-src/
+*.ttf
+*.otf
