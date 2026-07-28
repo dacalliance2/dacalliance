@@ -109,6 +109,8 @@
           class="hero-visual-img"
           id="heroVideo"
           src="animation.mp4"
+          poster="hero-poster.webp"
+          fetchpriority="high"
           width="1440"
           height="720"
           muted
@@ -339,7 +341,11 @@
         </div>
 
         <div class="bridge-frame">
-          <img class="bridge-img" src="puente.png" alt="Puente de piedra con cuatro arcos, representando la metodología DAC Alliance" loading="lazy">
+          <picture>
+            <source srcset="puente.avif" type="image/avif">
+            <source srcset="puente.webp" type="image/webp">
+            <img class="bridge-img" src="puente.png" alt="Puente de piedra con cuatro arcos, representando la metodología DAC Alliance" loading="lazy">
+          </picture>
           <!-- Anclas invisibles: donde la roca se une al tablero del puente -->
           <span class="bridge-anchor bridge-anchor--left" aria-hidden="true"></span>
           <span class="bridge-anchor bridge-anchor--right" aria-hidden="true"></span>
@@ -570,13 +576,20 @@
     <!-- Visual protagonista con labels flotantes -->
     <div class="diag-showcase reveal-up">
       <div class="diag-visual-frame">
-        <img
-          src="frame_4.png"
-          alt="Diagrama del diagnóstico estratégico: análisis integral de dimensiones críticas del patrimonio digital"
-          loading="lazy"
-          width="800"
-          height="600"
-        />
+        <picture>
+          <source media="(max-width: 680px)" srcset="frame_4-mobile.avif" type="image/avif">
+          <source media="(max-width: 680px)" srcset="frame_4-mobile.webp" type="image/webp">
+          <source media="(max-width: 680px)" srcset="frame_4-mobile.png">
+          <source srcset="frame_4.avif" type="image/avif">
+          <source srcset="frame_4.webp" type="image/webp">
+          <img
+            src="frame_4.png"
+            alt="Diagrama del diagnóstico estratégico: análisis integral de dimensiones críticas del patrimonio digital"
+            loading="lazy"
+            width="800"
+            height="600"
+          />
+        </picture>
         <div class="diag-glow" aria-hidden="true"></div>
 
         <!-- Labels flotantes alrededor de los círculos (desktop) -->
@@ -743,13 +756,20 @@
       <!-- Columna imagen -->
       <div class="ocaps-visual-col reveal-up">
         <div class="ocaps-frame">
-          <img
-            src="frame_5.png"
-            alt="Render 3D del proceso OCAPS: datos de blockchain e identidad del titular ingresan a la máquina DAC Alliance y generan el DAC OCAPS Report"
-            loading="lazy"
-            width="600"
-            height="800"
-          />
+          <picture>
+            <source media="(max-width: 680px)" srcset="frame_5-mobile.avif" type="image/avif">
+            <source media="(max-width: 680px)" srcset="frame_5-mobile.webp" type="image/webp">
+            <source media="(max-width: 680px)" srcset="frame_5-mobile.png">
+            <source srcset="frame_5.avif" type="image/avif">
+            <source srcset="frame_5.webp" type="image/webp">
+            <img
+              src="frame_5.png"
+              alt="Render 3D del proceso OCAPS: datos de blockchain e identidad del titular ingresan a la máquina DAC Alliance y generan el DAC OCAPS Report"
+              loading="lazy"
+              width="600"
+              height="800"
+            />
+          </picture>
           <div class="ocaps-glow" aria-hidden="true"></div>
 
           <!-- Labels flotantes -->
@@ -815,13 +835,20 @@
     <!-- Imagen: cinco pilares con textos y números ya integrados, misma foto en desktop y mobile -->
     <div class="estructuracion-visual reveal-up">
       <div class="estructuracion-frame">
-        <img
-          src="mobile6.png"
-          alt="Cinco pilares institucionales representando las estructuras jurídicas de DAC Alliance: LLCs, Sociedades internacionales, Estructuración Patrimonial, Fundaciones privadas y Holdings patrimoniales"
-          loading="lazy"
-          width="931"
-          height="454"
-        />
+        <picture>
+          <source media="(max-width: 680px)" srcset="mobile6-mobile.avif" type="image/avif">
+          <source media="(max-width: 680px)" srcset="mobile6-mobile.webp" type="image/webp">
+          <source media="(max-width: 680px)" srcset="mobile6-mobile.png">
+          <source srcset="mobile6.avif" type="image/avif">
+          <source srcset="mobile6.webp" type="image/webp">
+          <img
+            src="mobile6.png"
+            alt="Cinco pilares institucionales representando las estructuras jurídicas de DAC Alliance: LLCs, Sociedades internacionales, Estructuración Patrimonial, Fundaciones privadas y Holdings patrimoniales"
+            loading="lazy"
+            width="931"
+            height="454"
+          />
+        </picture>
         <div class="estructuracion-glow" aria-hidden="true"></div>
       </div>
     </div>
@@ -908,13 +935,20 @@
 
     <div class="ocacs-visual reveal-up">
       <div class="ocacs-frame">
-        <img
-          src="frame7.png"
-          alt="Un representante entrega el informe DAC OCACS Report a cuatro representantes institucionales — banca privada, custodio institucional, family office y regulador de compliance — en un entorno de análisis de blockchain"
-          loading="lazy"
-          width="1181"
-          height="643"
-        />
+        <picture>
+          <source media="(max-width: 680px)" srcset="frame7-mobile.avif" type="image/avif">
+          <source media="(max-width: 680px)" srcset="frame7-mobile.webp" type="image/webp">
+          <source media="(max-width: 680px)" srcset="frame7-mobile.png">
+          <source srcset="frame7.avif" type="image/avif">
+          <source srcset="frame7.webp" type="image/webp">
+          <img
+            src="frame7.png"
+            alt="Un representante entrega el informe DAC OCACS Report a cuatro representantes institucionales — banca privada, custodio institucional, family office y regulador de compliance — en un entorno de análisis de blockchain"
+            loading="lazy"
+            width="1181"
+            height="643"
+          />
+        </picture>
         <div class="ocacs-glow" aria-hidden="true"></div>
       </div>
     </div>
@@ -945,13 +979,17 @@
 
     <div class="synthesis-visual reveal-up">
       <div class="synthesis-frame">
-        <img
-          src="8.jpg"
-          alt="Bóveda institucional flanqueada por dos columnas — Insight Trust y Molina Law Boutique — rodeada de paneles de análisis de activos, trazabilidad blockchain y compliance, con el checklist: identificado, documentado, estructurado, trazable, protegido, transferible, preparado para procesos sucesorios y para interactuar con terceros institucionales"
-          loading="lazy"
-          width="955"
-          height="650"
-        />
+        <picture>
+          <source srcset="8.avif" type="image/avif">
+          <source srcset="8.webp" type="image/webp">
+          <img
+            src="8.jpg"
+            alt="Bóveda institucional flanqueada por dos columnas — Insight Trust y Molina Law Boutique — rodeada de paneles de análisis de activos, trazabilidad blockchain y compliance, con el checklist: identificado, documentado, estructurado, trazable, protegido, transferible, preparado para procesos sucesorios y para interactuar con terceros institucionales"
+            loading="lazy"
+            width="955"
+            height="650"
+          />
+        </picture>
         <a class="logo-hotspot synthesis-hotspot--insight" href="https://insight-trust.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Insight Trust"></a>
         <a class="logo-hotspot synthesis-hotspot--molina" href="https://www.molinalawboutique.es/" target="_blank" rel="noopener noreferrer" aria-label="Visitar el sitio de Molina Law Boutique"></a>
       </div>
