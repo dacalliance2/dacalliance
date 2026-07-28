@@ -492,7 +492,7 @@
     var successMsg = form.querySelector('.contact-feedback--success');
     var errorMsg = form.querySelector('.contact-feedback--error');
     var submitBtn = form.querySelector('.contact-submit');
-    var submitLabel = submitBtn ? submitBtn.querySelector('span') : null;
+    var submitLabel = submitBtn ? submitBtn.querySelector('.contact-submit-label') : null;
     var replyTo = form.querySelector('input[name="_replyto"]');
     var emailField = form.querySelector('#contact-email');
     var isSending = false;
