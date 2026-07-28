@@ -2289,6 +2289,52 @@ body.is-loaded [data-reveal] {
   .diagnostico { padding: 4.25rem 2rem; }
 }
 
+/* ── Grid de dimensiones para mobile (ícono + etiqueta, sin solape con la imagen) ── */
+.diag-annot-grid {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: .7rem;
+  margin: 0 0 2.2rem;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.diag-annot-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .6rem;
+  padding: 1.1rem .8rem .95rem;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 12px;
+}
+
+.diag-annot-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  color: var(--teal);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, .45);
+}
+
+.diag-annot-icon svg { width: 19px; height: 19px; }
+
+.diag-annot-card span:last-child {
+  font-family: var(--fb);
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, .85);
+}
+
 /* Mobile */
 @media (max-width: 680px) {
   .diagnostico { padding: 3.75rem 1.25rem; }
@@ -2311,6 +2357,11 @@ body.is-loaded [data-reveal] {
     border: 1px solid var(--line);
   }
   .diag-benefit-item span { max-width: none; }
+
+  /* Dimensiones del diagnóstico en mobile: grid de tarjetas con ícono debajo
+     de la imagen (las labels flotantes no caben sin tapar los íconos del gráfico) */
+  .diag-list--fallback { display: none; }
+  .diag-annot-grid { display: grid; }
 }
 
 /* ══════════════ OCAPS ══════════════ */
