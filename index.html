@@ -108,7 +108,6 @@
         <video
           class="hero-visual-img"
           id="heroVideo"
-          src="animation.mp4"
           poster="hero-poster.webp"
           fetchpriority="high"
           width="1440"
@@ -116,7 +115,10 @@
           muted
           playsinline
           preload="metadata"
-        ></video>
+        >
+          <source src="animation-optimized.webm" type="video/webm">
+          <source src="animation-optimized.mp4" type="video/mp4">
+        </video>
         <div class="hero-visual-glow" aria-hidden="true"></div>
         <div class="hero-cursor-glow" aria-hidden="true"></div>
       </div>
